@@ -69,6 +69,9 @@ class EventData():
             mod_energy = self.ds_TCs.good_tc_pt[module_idx][:n_TCs+1][ak.argsort(mod_phi)]
             mod_r_over_z = self.ds_TCs.r_over_z[module_idx][:n_TCs+1][ak.argsort(mod_phi)]
             mod_phi = ak.sort(mod_phi)
+
+            # assigning each TCs to a columns
+            xml_alloc = sorted(xml_alloc, key=lambda x: x['column'])
   
             for tc_idx, TC_xml in enumerate(xml_alloc):
                 if tc_idx > len(mod_energy)-1: break
@@ -90,7 +93,7 @@ class EventData():
                         'column': columns[tc_idx],
                         'energy': value_energy
                     })
-    
+   
                 data_TCs[TC_xml['frame']][n_link][TC_xml['channel']%3] = [
                     code_energy, value_r_z, value_phi
                     ]
