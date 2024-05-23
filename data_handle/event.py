@@ -193,7 +193,7 @@ def provide_event(ev,ev_pTT, gen):
     counts = ak.flatten(ak.run_lengths(sorted_waferv.ts_waferv), axis=None)
     sorted_ts = apply_sort(sorted_waferv, counts, 2)   
 
-    sorted_layer = sorted_stc[ak.argsort(sorted_si['ts_layer'])]
+    sorted_layer = sorted_stc[ak.argsort(sorted_ts['ts_layer'])]
     counts = ak.flatten(ak.run_lengths(sorted_layer.ts_layer), axis=None)
     sorted_ts = apply_sort(sorted_layer, counts, 3)
     sorted_ts = ak.flatten(sorted_ts, axis=3)
@@ -209,7 +209,7 @@ def provide_event(ev,ev_pTT, gen):
     counts = ak.flatten(ak.run_lengths(sorted_waferv.good_tc_waferv), axis=None)
     sorted_stc = apply_sort(sorted_waferv, counts, 2)   
 
-    sorted_layer = sorted_stc[ak.argsort(sorted_si['good_tc_layer'])]
+    sorted_layer = sorted_stc[ak.argsort(sorted_stc['good_tc_layer'])]
     counts = ak.flatten(ak.run_lengths(sorted_layer.good_tc_layer), axis=None)
     sorted_stc = apply_sort(sorted_layer, counts, 3)
     sorted_stc = ak.flatten(sorted_stc, axis=3)
