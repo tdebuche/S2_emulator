@@ -62,9 +62,9 @@ def MB_geometry():
 
 
 def read_xml_pTTs(Edges):
-    if Edges = 'yes':
+    if Edges == 'yes':
         tree = ET.parse('config_files/AllocationpTTsEdges.xml')
-    if Edges = 'no':
+    if Edges == 'no':
         tree = ET.parse('config_files/AllocationpTTsNoEdges.xml')
         
     root = tree.getroot()
