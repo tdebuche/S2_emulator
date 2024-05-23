@@ -86,3 +86,4 @@ def read_xml_pTTs(Edges):
 
         S1_index += 1
     return [reversed_data_pTT]
+print(read_xml_pTTs('no'))
