@@ -77,7 +77,6 @@ def read_xml_pTTs(Edges):
             for frame_element in channel_element.findall('.//Frame'):
                 if all(attr in frame_element.attrib for attr in ['id','pTT']):
                     frame  = int(frame_element.get('id'))
-                    column = int(frame_element.get('column'))
                     pTT     = frame_element.get('pTT')
                     n_link = 14 + 14*math.floor(channel/3) + S1_index
                     reversed_data_pTT[pTT].append({'frame'  : frame, 
