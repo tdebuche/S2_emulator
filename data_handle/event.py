@@ -151,7 +151,7 @@ def apply_sort(df, counts, axis):
         df[field] = ak.unflatten(df[field], counts, axis)
     return df
 
-def provide_event(ev, gen):
+def provide_event(ev,ev_pTT, gen):
     ev['r_over_z'] = np.sqrt(ev.good_tc_x**2 + ev.good_tc_y**2)/ev.good_tc_z
     ev['MB_v'] = np.floor((ev.good_tc_cellv-1)/4)
     ev = ev[[x for x in ak.fields(ev) if not x in ["good_tc_x","good_tc_y","good_tc_z"]]]
@@ -159,12 +159,17 @@ def provide_event(ev, gen):
     # dividing silicon and scintillators
     sci = ev[ev['good_tc_subdet'] == 10]
     si  = ev[ev['good_tc_subdet'] != 10]
-    
+    ts = ev_pTT[ev_pTT['ts_layer']<27]
+    stc = ev[ev['ts_layer']>26]
+
+        
     # selecting first 120 sector only
     si  = si[(si['good_tc_waferv']-si['good_tc_waferu']>0) & (si['good_tc_waferv']>=0)]
     sci = sci[sci['good_tc_cellv']<=48]
+    ts  = ts[(ts['ts_waferv']-ts['ts_waferu']>0) & (ts['ts_waferv']>=0)]     
+    stc = stc[(stc['good_tc_waferv']-stc['good_tc_waferu']>0) & (stc['good_tc_waferv']>=0)]
 
-    # sorting by modules  
+    # sorting by module
     sorted_waferu = si[ak.argsort(si['good_tc_waferu'])]
     counts = ak.flatten(ak.run_lengths(sorted_waferu.good_tc_waferu), axis=None)
     sorted_si = apply_sort(sorted_waferu, counts, 1)
@@ -172,12 +177,44 @@ def provide_event(ev, gen):
     sorted_waferv = sorted_si[ak.argsort(sorted_si['good_tc_waferv'])]
     counts = ak.flatten(ak.run_lengths(sorted_waferv.good_tc_waferv), axis=None)
     sorted_si = apply_sort(sorted_waferv, counts, 2)
-
+        
     sorted_layer = sorted_si[ak.argsort(sorted_si['good_tc_layer'])]
     counts = ak.flatten(ak.run_lengths(sorted_layer.good_tc_layer), axis=None)
     sorted_si = apply_sort(sorted_layer, counts, 3)
     sorted_si = ak.flatten(sorted_si, axis=3)
     sorted_si = ak.flatten(sorted_si, axis=2)
+
+    # sorting ts
+    sorted_waferu = ts[ak.argsort(ts['ts_waferu'])]
+    counts = ak.flatten(ak.run_lengths(sorted_waferu.ts_waferu), axis=None)
+    sorted_ts = apply_sort(sorted_waferu, counts, 1)
+        
+    sorted_waferv = ts[ak.argsort(ts['ts_waferv'])]
+    counts = ak.flatten(ak.run_lengths(sorted_waferv.ts_waferv), axis=None)
+    sorted_ts = apply_sort(sorted_waferv, counts, 2)   
+
+    sorted_layer = sorted_stc[ak.argsort(sorted_si['ts_layer'])]
+    counts = ak.flatten(ak.run_lengths(sorted_layer.ts_layer), axis=None)
+    sorted_ts = apply_sort(sorted_layer, counts, 3)
+    sorted_ts = ak.flatten(sorted_ts, axis=3)
+    sorted_ts = ak.flatten(sorted_ts, axis=2)
+
+
+    # sorting stc
+    sorted_waferu = stc[ak.argsort(stc['good_tc_waferu'])]
+    counts = ak.flatten(ak.run_lengths(sorted_waferu.good_tc_waferu), axis=None)
+    sorted_stc = apply_sort(sorted_waferu, counts, 1)
+
+    sorted_waferv = stc[ak.argsort(stc['good_tc_waferv'])]
+    counts = ak.flatten(ak.run_lengths(sorted_waferv.good_tc_waferv), axis=None)
+    sorted_stc = apply_sort(sorted_waferv, counts, 2)   
+
+    sorted_layer = sorted_stc[ak.argsort(sorted_si['good_tc_layer'])]
+    counts = ak.flatten(ak.run_lengths(sorted_layer.good_tc_layer), axis=None)
+    sorted_stc = apply_sort(sorted_layer, counts, 3)
+    sorted_stc = ak.flatten(sorted_stc, axis=3)
+    sorted_stc = ak.flatten(sorted_stc, axis=2)
+
 
     # sorting by transverse energy, simulating the ECONT_T
     sorted_si = sorted_si[ak.argsort(sorted_si['good_tc_pt'], ascending=False)][0]
@@ -195,7 +232,7 @@ def provide_event(ev, gen):
     # sorting by transverse energy, simulating the ECONT_T
     sorted_sci = sorted_sci[ak.argsort(sorted_sci['good_tc_pt'], ascending=False)][0]
 
-    return EventData(sorted_si, sorted_sci, gen)
+    return EventData(sorted_si, sorted_sci, sorted_ts,sorted_stc, ev_pTT, gen)
 
 def provide_events(n, particles, PU):
     base_path = cfg_particles['base_path']
@@ -212,13 +249,17 @@ def provide_events(n, particles, PU):
     branches_gen = [
         'event', 'good_genpart_exeta', 'good_genpart_exphi', 'good_genpart_energy'
     ]
+    branches_pTT =  [
+        'ts_energy', 'ts_waferu','ts_waferv','ts_layer',
+    ]
 
     tree = uproot.open(filepath)[name_tree]
     events_ds = []
     printProgressBar(0, n, prefix='Reading '+str(n)+' events from ROOT file:', suffix='Complete', length=50)
     for ev in range(n):
       data = tree.arrays(branches_tc, entry_start=ev, entry_stop=ev+1, library='ak')
+      data_pTT = tree.arrays(branches_pTT, entry_start=ev, entry_stop=ev+1, library='ak')
       data_gen = tree.arrays(branches_gen, entry_start=ev, entry_stop=ev+1, library='ak')[0]
-      events_ds.append(provide_event(data, data_gen))
+      events_ds.append(provide_event(data, data_pTT, data_gen))
       printProgressBar(ev+1, n, prefix='Reading '+str(n)+' events from ROOT file:', suffix='Complete', length=50)
     return events_ds
