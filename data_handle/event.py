@@ -189,7 +189,7 @@ def provide_event(ev,ev_pTT, gen):
     counts = ak.flatten(ak.run_lengths(sorted_waferu.ts_waferu), axis=None)
     sorted_ts = apply_sort(sorted_waferu, counts, 1)
         
-    sorted_waferv = ts[ak.argsort(ts['ts_waferv'])]
+    sorted_waferv = sorted_ts[ak.argsort(sorted_ts['ts_waferv'])]
     counts = ak.flatten(ak.run_lengths(sorted_waferv.ts_waferv), axis=None)
     sorted_ts = apply_sort(sorted_waferv, counts, 2)   
 
@@ -205,7 +205,7 @@ def provide_event(ev,ev_pTT, gen):
     counts = ak.flatten(ak.run_lengths(sorted_waferu.good_tc_waferu), axis=None)
     sorted_stc = apply_sort(sorted_waferu, counts, 1)
 
-    sorted_waferv = stc[ak.argsort(stc['good_tc_waferv'])]
+    sorted_waferv = sorted_stc[ak.argsort(sorted_stc['good_tc_waferv'])]
     counts = ak.flatten(ak.run_lengths(sorted_waferv.good_tc_waferv), axis=None)
     sorted_stc = apply_sort(sorted_waferv, counts, 2)   
 
