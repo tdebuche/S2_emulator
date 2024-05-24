@@ -87,8 +87,8 @@ class EventData():
         if v   & ~0xF : return 0 # raise Exception( "Invalid v" )
         return hex(0x60000000 | self.ObjectType(0) | ((plane & 0x3F) << 16) | ((v-u & 0xF) << 12) | ((v & 0xF) << 8))
 
-    def get_pTT_id(self, Sector, Object_type , S1Board, CEECEH, eta, phi):
-        return hex(0x60000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((Object_type & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
+    def get_pTT_id(self, Sector , S1Board, CEECEH, eta, phi):
+        return hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
     
     def get_MB_id(self, plane, v, MB):
         return MB[int(plane)][int(v)]
