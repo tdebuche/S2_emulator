@@ -1,6 +1,8 @@
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 import math
+import numpy as np
+import awkward as ak
 
 def read_xml():
     tree = ET.parse('config_files/S1.ChannelAllocation.xml')
@@ -87,11 +89,85 @@ def read_xml_pTTs(Edges):
     return [reversed_data_pTT]
 print(read_xml_pTTs('no'))
 
+def get_pTT_id(Sector, S1Board, CEECEH, x):
+    eta = x[x.find('eta')+3]
+    if x[x.find('eta')+3] != '-':
+        eta += x[x.find('eta')+4]
+    phi = x[x.find('phi')+3]
+    if x[x.find('phi')+3] != '*':
+        phi += x[x.find('eta')+4]
+    eta = str(eta)
+    phi = str(phi)
+    return hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
+    
+def get_moduleCEE(x):
+    start_cursor = 0
+    end_cursor = x[start_cursor:].find(',') + start_cursor
+    layer = int(x[start_cursor:end_cursor])
+    start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
+    end_cursor = x[start_cursor:].find(',') + start_cursor
+    u = int(x[start_cursor:end_cursor])
+    start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
+    v = int(x[start_cursor:])
 
+def get_moduleCEE(x):
+    start_cursor = 0
+    end_cursor = x[start_cursor:].find(',') + start_cursor
+    layer = int(x[start_cursor:end_cursor])
+    start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
+    end_cursor = x[start_cursor:].find(',') + start_cursor
+    u = int(x[start_cursor:end_cursor])
+    start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
+    end_cursor = x[start_cursor:].find(',') + start_cursor
+    v = int(x[start_cursor:end_cursor])
+    start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
+    stc = int(x[start_cursor:])
+    
+
+get_moduleCEE(x[start_module: end_module])
+def read_pTT(x,S1Board,CEECEH):
+    pTT = {'pTT' :get_pTT_id(0,S1Board,CEECEH,x), 'Modules':[]}
+    cursor = x.find('\t')+2
+    nb_module = x[cursor]
+    for k in range(nb_module): 
+        start_module = x[cursor:].find('(') +1 +cursor
+        end_module = x[cursor:].find(')')  +cursor
+        energy = x[end_module+3,x[end_module+3:].find(',')]
+        if CEECEH==0:
+            module_id,layer,u,v = get_moduleCEE(x[start_module: end_module])
+            pTT['Module'].append([{'module_id' : module_id, 'module_layer' : layer,'module_u' : u,'module_v' : v,'module_energy' = int(energy)}])
+        if CEECEH==1:
+            module_id,layer,u,v,stc_idx = get_moduleCEH(x[start_module: end_module])
+            pTT['Module'].append([{'module_id' : module_id,'module_layer' : layer,'module_u' : u,'module_v' : v,'stc_idx': stc ,'module_energy' = int(energy)}])
+        cursor = x[end_module+3:].find(',')
+        
 def read_txt_pTTs(Edges):
     if Eges == 'yes':
-        f = open('config_files/Geometry.xml', 'r')
+        fCEE = open('config_files/CE_E_allBoards_Edges.txt', 'r')
+        data_CEE = fCEE.readlines()
+        fCEE.close()
+        fCEH = open('config_files/CE_H_allBoards_Edges.txt', 'r')
+        data_CEH = fCEH.readlines()
+        fCEH.close()
+    if Eges == 'no':
+        fCEE = open('config_files/CE_E_allBoards_NoEdges.txt', 'r')
+        data_CEE = fCEE.readlines()
+        fCEE.close()
+        fCEH = open('config_files/CE_H_allBoards_NoEdges.txt', 'r')
+        data_CEH = fCEH.readlines()
+        fCEH.close()
+    pTTs_CEE = ak.array([])
+    for x in data_CEE:
+        if x[0:5] == 'Board':
+            Board = x[6:16]
+        if x[0] == '/':
+            pTTs_CEE.append(read_pTT(x,S1Board,0))
+    for x in data_CEH:
+        if x[0:5] == 'Board':
+            Board = x[6:16]
+        if x[0] == '/':
+            pTTs_CEH.append(read_pTT(x,S1Board,1))
+    return(pTTs_CEE,pTTs_CEH)
 
-fichier = f.readlines()
-f.close()
+
     
