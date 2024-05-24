@@ -58,6 +58,7 @@ class EventData():
         self.ds_sci  = ds_sci
         self.ds_ts = ds_ts
         self.ds_stc = ds_stc
+        self.pTTs = ds_pTTs
         self.gen     = gen
         self.event   = gen.event
         self.eta_gen = gen.good_genpart_exeta[0]
@@ -91,10 +92,16 @@ class EventData():
     
     def get_MB_id(self, plane, v, MB):
         return MB[int(plane)][int(v)]
-    
+
+
+
+
+
+        
     def get_TC_allocation(self, xml_data, module):
         return xml_data[module]
-    
+            
+            
     def _process_module(self, ds_TCs, idx, xml_alloc, data_TCs):
         n_TCs = xml_alloc[-1]['index']  # dangerous
         columns = [frame['column'] for frame in xml_alloc]
@@ -120,6 +127,42 @@ class EventData():
                 code_energy, value_r_z, value_phi
                 ]
 
+
+
+ 
+    def _process_event(self, args, xml, MB_conv):
+        data_TCs = std.map[int,std.map[int,std.map[int,'std::vector<long int>']]]()
+
+        for module_idx in range(len(self.ds_si.good_tc_layer)):
+            module = self.get_module_id(self.ds_si.good_tc_layer[module_idx][0],
+                                        self.ds_si.good_tc_waferu[module_idx][0],
+                                        self.ds_si.good_tc_waferv[module_idx][0])
+            xml_alloc = self.get_TC_allocation(xml[0], module)
+            if xml_alloc: self._process_module(self.ds_si, module_idx, xml_alloc, data_TCs)
+
+        for MB_idx in range(len(self.ds_sci.good_tc_layer)):
+            MB = self.get_MB_id(self.ds_sci.good_tc_layer[MB_idx][0],
+                                self.ds_sci.MB_v[MB_idx][0], MB_conv)
+            xml_alloc = self.get_TC_allocation(xml[1], MB)
+            if xml_alloc: self._process_module(self.ds_sci, MB_idx, xml_alloc, data_TCs)
+        return data_TCs
+
+
+    
+    def _data_packer(self, args, xml, xml_MB):
+        data_TCs = self._process_event(args, xml, xml_MB)
+        data_links = cppyy.gbl.pack_Links(data_TCs)
+
+        # filling data into emulator c++ variables
+        self.data_packer = cppyy.gbl.fill_Links(data_links) 
+
+        
+        
+#################################################PTTs###########################################
+    def build_pTTs(self, args,txt_S1pTTs):
+            
+    def get_pTT_allocation(self, xml_allocation, pTT):
+        return xml_allocation[pTT]
     def _process_pTT(self, ds_TCs, idx, xml_alloc, data_TCs):
         n_TCs = xml_alloc[-1]['index']  # dangerous
         columns = [frame['column'] for frame in xml_alloc]
@@ -146,57 +189,26 @@ class EventData():
                 ]
 
 
- 
-    def _process_event(self, args, xml, MB_conv):
-        data_TCs = std.map[int,std.map[int,std.map[int,'std::vector<long int>']]]()
-
-        for module_idx in range(len(self.ds_si.good_tc_layer)):
-            module = self.get_module_id(self.ds_si.good_tc_layer[module_idx][0],
-                                        self.ds_si.good_tc_waferu[module_idx][0],
-                                        self.ds_si.good_tc_waferv[module_idx][0])
-            xml_alloc = self.get_TC_allocation(xml[0], module)
-            if xml_alloc: self._process_module(self.ds_si, module_idx, xml_alloc, data_TCs)
-
-        for MB_idx in range(len(self.ds_sci.good_tc_layer)):
-            MB = self.get_MB_id(self.ds_sci.good_tc_layer[MB_idx][0],
-                                self.ds_sci.MB_v[MB_idx][0], MB_conv)
-            xml_alloc = self.get_TC_allocation(xml[1], MB)
-            if xml_alloc: self._process_module(self.ds_sci, MB_idx, xml_alloc, data_TCs)
-        return data_TCs
-
+        
     def _process_eventpTT(self,args, xml_allocation, xml_duplication,txt_S1pTTs,data_pTTs)
         data_TCs = std.map[int,std.map[int,std.map[int,'std::vector<long int>']]]()
         Sector = args.sector
-        pTTs = self.build_pTTs(args,txt_S1pTTs)
+        self.pTTs = self.build_pTTs(args,txt_S1pTTs)
 
         for pTT_idx in range(len(pTTs)):
             pTT = self.get_pTT_id(Sector = 0, Object_type = 6, pTTs['pTT_Board'][pTT_idx],pTTs['pTT_CEECEH'][pTT_idx],pTTs['pTT_eta'][pTT_idx],pTTs['pTT_phi'][pTT_idx])
             xml_alloc = self.get_pTT_allocation(xml_allocation, pTT)
-            if xml_alloc: self._process_pTT(self.ds_ts,self.ds_stc, pTT_idx, xml_allocation, data_pTTs)
+            if xml_alloc: self._process_pTT(self.pTTs, pTT_idx, xml_allocation, data_pTTs)
                     
         return data_pTTs
 
-    
-    def _data_packer(self, args, xml, xml_MB):
-        data_TCs = self._process_event(args, xml, xml_MB)
-        data_links = cppyy.gbl.pack_Links(data_TCs)
 
-        # filling data into emulator c++ variables
-        self.data_packer = cppyy.gbl.fill_Links(data_links) 
-
-        
     def _pTT_packer(self, args, xml_allocation, xml_duplication,txt_S1pTTs):
         data_pTTs = self._process_eventpTT(args,args, xml_allocation, xml_duplication,txt_S1pTTs)
         data_links = cppyy.gbl.pack_LinkspTT(data_pTTs)
 
         # filling data into emulator c++ variables
-        self.data_packerpTT = cppyy.gbl.fill_LinkspTT(data_links) 
-        
-
-
-
-
-        
+        self.data_packerpTT = cppyy.gbl.fill_LinkspTT(data_links)      
 #######################################################################################
 ############################### PROVIDE EVENTS ########################################
 #######################################################################################
