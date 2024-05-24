@@ -86,3 +86,12 @@ def read_xml_pTTs(Edges):
         S1_index += 1
     return [reversed_data_pTT]
 print(read_xml_pTTs('no'))
+
+
+def read_txt_pTTs(Edges):
+    if Eges == 'yes':
+        f = open('config_files/Geometry.xml', 'r')
+
+fichier = f.readlines()
+f.close()
+    
