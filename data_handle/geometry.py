@@ -93,8 +93,8 @@ def get_pTT_id(Sector, S1Board, CEECEH, x):
     if x[x.find('eta')+4] != '-':
         eta += x[x.find('eta')+4]
     phi = x[x.find('phi')+3]
-    if x[x.find('eta')+4] != '*':
-        phi += x[x.find('eta')+4]
+    if x[x.find('phi')+4] != '*':
+        phi += x[x.find('phi')+4]
     eta = int(eta)
     phi = int(phi)
     S1Board = (int(S1Board[2])*16 + int(S1Board[3])) & 0x3F
