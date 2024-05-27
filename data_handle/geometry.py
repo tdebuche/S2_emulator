@@ -78,8 +78,8 @@ def read_xml_pTTs(Edges):
             channel = int(channel_element.get('aux-id'))
             for frame_element in channel_element.findall('.//Frame'):
                 if all(attr in frame_element.attrib for attr in ['id','pTT']):
-                    frame  = int(frame_element.get('id'))
-                    pTT     = frame_element.get('pTT')
+                    frame  = hex(int(frame_element.get('id')))
+                    pTT     = int(frame_element.get('pTT'),16)
                     n_link = 14 + 14*math.floor(channel/3) + S1_index
                     reversed_data_pTT[pTT].append({'frame'  : frame, 
                                                   'channel': channel, 
@@ -99,9 +99,10 @@ def get_pTT_id(Sector, S1Board, CEECEH, x):
     phi = int(phi)
     S1Board = (int(S1Board[2])*16 + int(S1Board[3])) & 0x3F
     pTT_id = hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
-    while len(pTT_id) <10:
-        pTT_id = '0x'+ str(0) +pTT_id[2:]
+    #while len(pTT_id) <10:
+    #    pTT_id = '0x'+ str(0) +pTT_id[2:]
     return pTT_id
+    
 def get_moduleCEE(x,Sector):
     start_cursor = 0
     end_cursor = x[start_cursor:].find(',') + start_cursor
@@ -112,8 +113,8 @@ def get_moduleCEE(x,Sector):
     start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
     v = int(x[start_cursor:])
     module_id = hex(0x00000000 | ((Sector & 0x3) << 29) | ((0 & 0x3) << 26)  | ((0 & 0xF) << 22) | ((layer & 0x3F) << 16) |  ((u & 0xF) << 12) | ((v & 0xF) << 8))
-    while len(module_id) <10:
-        module_id = '0x'+ str(0) +module_id[2:]
+    #while len(module_id) <10:
+    #    module_id = '0x'+ str(0) +module_id[2:]
     return(module_id,layer,u,v)
                                                                                                                                                  
 
@@ -130,8 +131,8 @@ def get_moduleCEH(x,Sector):
     start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
     stc = int(x[start_cursor:])
     module_id = hex(0x00000000 | ((Sector & 0x3) << 29) | ((0 & 0x3) << 26)  | ((0 & 0xF) << 22) | ((layer & 0x3F) << 16) |  ((u & 0xF) << 12) | ((v & 0xF) << 8))
-    while len(module_id) <10:
-        module_id = '0x'+ str(0) +module_id[2:]
+    #while len(module_id) <10:
+    #    module_id = '0x'+ str(0) +module_id[2:]
     return(module_id,layer,u,v,stc)
 
 
