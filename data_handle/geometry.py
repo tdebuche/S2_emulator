@@ -165,7 +165,7 @@ def read_txt_pTTs(Edges,Sector):
             S1Board = x[6:16]
         if x[0] == '/':
             pTTs_CEE.append(read_pTT(x,S1Board,0,Sector))
-    pTTs_CEE = ak.Array([])
+    pTTs_CEH = ak.Array([])
     for x in data_CEH:
         if x[0:5] == 'Board':
             S1Board = x[6:16]
