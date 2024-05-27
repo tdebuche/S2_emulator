@@ -100,7 +100,7 @@ def get_pTT_id(Sector, S1Board, CEECEH, x):
     phi = str(phi)
     return hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
     
-def get_moduleCEE(x):
+def get_moduleCEE(x,Sector):
     start_cursor = 0
     end_cursor = x[start_cursor:].find(',') + start_cursor
     layer = int(x[start_cursor:end_cursor])
@@ -109,8 +109,11 @@ def get_moduleCEE(x):
     u = int(x[start_cursor:end_cursor])
     start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
     v = int(x[start_cursor:])
+    module_id = hex(0x00000000 | ((Sector & 0x3) << 29) | ((0 & 0x3) << 26)  | ((0 & 0xF) << 22) | ((layer & 0x3F) << 16) |  ((u & 0xF) << 12) | ((v & 0xF) << 8))
+    return(module_id,layer,u,v)
+                                                                                                                                                 
 
-def get_moduleCEE(x):
+def get_moduleCEH(x,Sector):
     start_cursor = 0
     end_cursor = x[start_cursor:].find(',') + start_cursor
     layer = int(x[start_cursor:end_cursor])
@@ -122,11 +125,12 @@ def get_moduleCEE(x):
     v = int(x[start_cursor:end_cursor])
     start_cursor = x[end_cursor+1].find(',') + end_cursor + 1 +1
     stc = int(x[start_cursor:])
-    
+    module_id = hex(0x00000000 | ((Sector & 0x3) << 29) | ((0 & 0x3) << 26)  | ((0 & 0xF) << 22) | ((layer & 0x3F) << 16) |  ((u & 0xF) << 12) | ((v & 0xF) << 8))
+    return(module_id,layer,u,v,stc)
 
-get_moduleCEE(x[start_module: end_module])
-def read_pTT(x,S1Board,CEECEH):
-    pTT = {'pTT' :get_pTT_id(0,S1Board,CEECEH,x), 'Modules':[]}
+
+def read_pTT(x,S1Board,CEECEH,Sector):
+    pTT = {'pTT' :get_pTT_id(Sector,S1Board,CEECEH,x), 'Modules':[]}
     cursor = x.find('\t')+2
     nb_module = x[cursor]
     for k in range(nb_module): 
@@ -134,14 +138,14 @@ def read_pTT(x,S1Board,CEECEH):
         end_module = x[cursor:].find(')')  +cursor
         energy = x[end_module+3,x[end_module+3:].find(',')]
         if CEECEH==0:
-            module_id,layer,u,v = get_moduleCEE(x[start_module: end_module])
+            module_id,layer,u,v = get_moduleCEE(x[start_module: end_module],Sector)
             pTT['Module'].append([{'module_id' : module_id, 'module_layer' : layer,'module_u' : u,'module_v' : v,'module_energy' = int(energy)}])
         if CEECEH==1:
-            module_id,layer,u,v,stc_idx = get_moduleCEH(x[start_module: end_module])
+            module_id,layer,u,v,stc_idx = get_moduleCEH(x[start_module: end_module],Sector)
             pTT['Module'].append([{'module_id' : module_id,'module_layer' : layer,'module_u' : u,'module_v' : v,'stc_idx': stc ,'module_energy' = int(energy)}])
         cursor = x[end_module+3:].find(',')
         
-def read_txt_pTTs(Edges):
+def read_txt_pTTs(Edges,Sector):
     if Eges == 'yes':
         fCEE = open('config_files/CE_E_allBoards_Edges.txt', 'r')
         data_CEE = fCEE.readlines()
@@ -159,15 +163,15 @@ def read_txt_pTTs(Edges):
     pTTs_CEE = ak.array([])
     for x in data_CEE:
         if x[0:5] == 'Board':
-            Board = x[6:16]
+            S1Board = x[6:16]
         if x[0] == '/':
-            pTTs_CEE.append(read_pTT(x,S1Board,0))
+            pTTs_CEE.append(read_pTT(x,S1Board,0,Sector))
     for x in data_CEH:
         if x[0:5] == 'Board':
-            Board = x[6:16]
+            S1Board = x[6:16]
         if x[0] == '/':
-            pTTs_CEH.append(read_pTT(x,S1Board,1))
+            pTTs_CEH.append(read_pTT(x,S1Board,1,Sector))
     return(pTTs_CEE,pTTs_CEH)
 
-
+print(read_txt_pTTs('no',0))
     
