@@ -159,12 +159,13 @@ def read_txt_pTTs(Edges,Sector):
         fCEH = open('config_files/CE_H_allBoards_NoEdges.txt', 'r')
         data_CEH = fCEH.readlines()
         fCEH.close()
-    pTTs_CEE = ak.array([])
+    pTTs_CEE = ak.Array([])
     for x in data_CEE:
         if x[0:5] == 'Board':
             S1Board = x[6:16]
         if x[0] == '/':
             pTTs_CEE.append(read_pTT(x,S1Board,0,Sector))
+    pTTs_CEE = ak.Array([])
     for x in data_CEH:
         if x[0:5] == 'Board':
             S1Board = x[6:16]
