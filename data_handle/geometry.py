@@ -132,7 +132,7 @@ def get_moduleCEH(x,Sector):
 def read_pTT(x,S1Board,CEECEH,Sector):
     pTT = {'pTT' :get_pTT_id(Sector,S1Board,CEECEH,x), 'Modules':[]}
     cursor = x.find('\t')+2
-    nb_module = x[cursor]
+    nb_module = int(x[cursor])
     for k in range(nb_module): 
         start_module = x[cursor:].find('(') +1 +cursor
         end_module = x[cursor:].find(')')  +cursor
