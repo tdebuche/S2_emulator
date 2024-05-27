@@ -87,7 +87,6 @@ def read_xml_pTTs(Edges):
 
         S1_index += 1
     return [reversed_data_pTT]
-print(read_xml_pTTs('no'))
 
 def get_pTT_id(Sector, S1Board, CEECEH, x):
     eta = x[x.find('eta')+3]
@@ -146,14 +145,14 @@ def read_pTT(x,S1Board,CEECEH,Sector):
         cursor = x[end_module+3:].find(',')
         
 def read_txt_pTTs(Edges,Sector):
-    if Eges == 'yes':
+    if Edges == 'yes':
         fCEE = open('config_files/CE_E_allBoards_Edges.txt', 'r')
         data_CEE = fCEE.readlines()
         fCEE.close()
         fCEH = open('config_files/CE_H_allBoards_Edges.txt', 'r')
         data_CEH = fCEH.readlines()
         fCEH.close()
-    if Eges == 'no':
+    if Edges == 'no':
         fCEE = open('config_files/CE_E_allBoards_NoEdges.txt', 'r')
         data_CEE = fCEE.readlines()
         fCEE.close()
