@@ -95,8 +95,8 @@ def get_pTT_id(Sector, S1Board, CEECEH, x):
     phi = x[x.find('phi')+3]
     if x[x.find('phi')+3] != '*':
         phi += x[x.find('eta')+4]
-    eta = str(eta)
-    phi = str(phi)
+    eta = int(eta)
+    phi = int(phi)
     return hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
     
 def get_moduleCEE(x,Sector):
