@@ -143,6 +143,7 @@ def read_pTT(x,S1Board,CEECEH,Sector):
             module_id,layer,u,v,stc_idx = get_moduleCEH(x[start_module: end_module],Sector)
             pTT['Module'].append([{'module_id' : module_id,'module_layer' : layer,'module_u' : u,'module_v' : v,'stc_idx': stc ,'module_energy' : int(energy)}])
         cursor = x[end_module+3:].find(',')
+    return(pTT)
         
 def read_txt_pTTs(Edges,Sector):
     if Edges == 'yes':
@@ -159,13 +160,13 @@ def read_txt_pTTs(Edges,Sector):
         fCEH = open('config_files/CE_H_allBoards_NoEdges.txt', 'r')
         data_CEH = fCEH.readlines()
         fCEH.close()
-    pTTs_CEE = ak.Array([])
+    pTTs_CEE = defaultdict(list)
     for x in data_CEE:
         if x[0:5] == 'Board':
             S1Board = x[6:16]
         if x[0] == '/':
             pTTs_CEE.append(read_pTT(x,S1Board,0,Sector))
-    pTTs_CEH = ak.Array([])
+    pTTs_CEH = defaultdict(list)
     for x in data_CEH:
         if x[0:5] == 'Board':
             S1Board = x[6:16]
