@@ -54,6 +54,7 @@ class EventData():
     def provide_ts(self,args):
         TCs = self.ds_si
         ts = defaultdict(list)
+        Sector = args.Sector
         for module_idx in range(len(self.ds_si.good_tc_layer)):
             module = self.get_module_id(Sector,
                                         self.ds_si.good_tc_layer[module_idx][0],
