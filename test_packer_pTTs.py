@@ -5,7 +5,14 @@ import math
 import yaml
 import os
 import argparse
+import cppyy
+import numpy as np
+cppyy.add_include_path(os.path.abspath(''))
+cppyy.load_library('lib_configuration.so')
+cppyy.include('L1Trigger/L1THGCal/interface/backend_emulator/HGCalHistoClusteringImpl_SA.h')
+cppyy.include('L1Trigger/L1THGCal/interface/backend_emulator/HGCalLinkTriggerCell_SA.h')
 
+from cppyy.gbl import l1thgcfirmware
 from data_handle.S1simulator import build_pTTsCEE
 from data_handle.geometry import read_txt_pTTs
 from data_handle.geometry import read_xml_pTTs
