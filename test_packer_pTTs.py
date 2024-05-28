@@ -17,6 +17,7 @@ from data_handle.S1simulator import build_pTTsCEE
 from data_handle.geometry import read_txt_pTTs
 from data_handle.geometry import read_xml_pTTs
 from data_handle.event_pTT import provide_events
+from data_handle.plot_pTT import create_energies
 
 parser = argparse.ArgumentParser(description='Stage-2 Emulator Parameters')
 parser.add_argument('-n',          type=int, default=1,         help='Provide the number of events')
@@ -42,3 +43,4 @@ for idx, event in enumerate(events):
   #event.provide_ts(args)
   print(event.pTT_packer)
   print(event.ds_ts)
+  print(create_energies(self.pTT_packer,args))
