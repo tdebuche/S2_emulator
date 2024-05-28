@@ -4,7 +4,7 @@ import awkward as ak
 import uproot
 import math
 import yaml
-import S1simulator
+import data_handle.S1simulator
 
 import data_handle.plot_tools as plot
 from data_handle.tools import compress_value, printProgressBar
