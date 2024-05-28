@@ -89,7 +89,7 @@ class EventData():
         for pTT_idx in range(len(pTTs)):
             pTT = pTTs[pTT_idx]['pTT_id']
             pTT_xml = self.get_pTT_allocation(xml_allocation, pTT)
-            data_pTTs[pTT_xml['frame']][pTT_xml['n_link']][pTT_xml['channel']%2] = pTT = pTTs[pTT_index]['energy']
+            data_pTTs[pTT_xml['frame']][pTT_xml['n_link']][pTT_xml['channel']%2]  = pTTs[pTT_idx]['energy']
 
         return data_pTTs
 
