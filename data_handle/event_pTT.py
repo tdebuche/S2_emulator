@@ -62,7 +62,7 @@ class EventData():
                                         self.ds_si.good_tc_layer[module_idx][0],
                                         self.ds_si.good_tc_waferu[module_idx][0],
                                         self.ds_si.good_tc_waferv[module_idx][0])
-            if self.ds_si.good_tc_layer < 27:
+            if self.ds_si.good_tc_layer[module_idx][0] < 27:
                 if ts[module] == []:
                     ts[module].append(0)
                 ts[module][0] += self.ds_si.good_tc_pt[module_idx][0]
