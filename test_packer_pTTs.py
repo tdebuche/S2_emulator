@@ -41,4 +41,4 @@ for idx, event in enumerate(events):
   event._pTT_packer(args, xml_allocation,S1pTTCEE,S1pTTCEH)
   #event.provide_ts(args)
   print(event.pTT_packer)
-  print(event.ds_ts[20])
+  print(event.ds_ts)
