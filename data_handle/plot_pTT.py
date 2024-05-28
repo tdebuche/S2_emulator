@@ -38,13 +38,13 @@ def read_xml_plot(Edges):
 def create_energies(data_links,args):
     Edges = args.Edges
     etaphi_links = read_xml_plot(Edges)
+    print(etaphi_links)
     if Edges == 'yes': nb_phi = 28
     else : nb_phi = 24
     energies = [[0 for phi in range(nb_phi)]for eta in range(20)]
     for S1Board in range(14):
         for eta in range(20):
             for phi in range(nb_phi):
-                print(etaphi_links[(S1Board,eta,phi)])
                 if data_links[etaphi_links[(S1Board,eta,phi)][0]] != []:
                     energies[eta][phi] += data_links[etaphi_links[(S1Board,eta,phi)][0]][0]
     return energies
