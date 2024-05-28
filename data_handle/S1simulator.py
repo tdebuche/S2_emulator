@@ -7,7 +7,7 @@ def build_pTTsCEE(ts_energy, args, S1pTTCEE):
     Sector = args.Sector
     pTTsCEE = []
     for S1Board in range(14):
-        for pTT_idx in range(len(S1pTTCEE):
+        for pTT_idx in range(len(S1pTTCEE)):
             energyCEE = 0
             pTT_id = S1pTTCEE[pTT_idx][0] 
             ModulesCEE = S1pTTCEE[pTT_idx][1] 
@@ -24,7 +24,7 @@ def build_pTTsCEH(stc_energy,args,S1pTTCEH):
     else : nb_phi = 24
     Sector = args.Sector
     pTTsCEH = []
-    for pTT_idx in range(len(S1pTTCEH):
+    for pTT_idx in range(len(S1pTTCEH)):
         energyCEH = 0
         pTT_id = S1pTTCEH[pTT_idx][0] 
         STCsCEH = S1pTTCEH[pTT_idx][1] 
