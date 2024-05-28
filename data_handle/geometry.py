@@ -78,8 +78,8 @@ def read_xml_pTTs(Edges):
             channel = int(channel_element.get('aux-id'))
             for frame_element in channel_element.findall('.//Frame'):
                 if all(attr in frame_element.attrib for attr in ['id','pTT']):
-                    frame  = hex(int(frame_element.get('id')))
-                    pTT     = int(frame_element.get('pTT'),16)
+                    frame  = int(frame_element.get('id'))
+                    pTT     = hex(int(frame_element.get('pTT'),16))
                     n_link = 14 + 14*math.floor(channel/3) + S1_index
                     reversed_data_pTT[pTT].append({'frame'  : frame, 
                                                   'channel': channel, 
