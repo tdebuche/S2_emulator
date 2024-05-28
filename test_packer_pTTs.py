@@ -43,4 +43,4 @@ for idx, event in enumerate(events):
   #event.provide_ts(args)
   print(event.pTT_packer)
   print(event.ds_ts)
-  print(create_energies(self.pTT_packer,args))
+  print(create_energies(event.pTT_packer,args))
