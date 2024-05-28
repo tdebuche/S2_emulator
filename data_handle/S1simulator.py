@@ -18,7 +18,6 @@ def build_pTTsCEE(ts_energy, args, S1pTTCEE):
         pTTsCEE.append({'pTT_id' : pTT_id, 'energy': energyCEE})
             #if energyCEE != 0:
             #print({'pTT_id' : pTT_id, 'energy': energyCEE})
-    print(len(S1pTTCEE))
     return(pTTsCEE)
 
 
