@@ -98,8 +98,8 @@ class EventData():
     def _pTT_packer(self, args, xml_allocation,S1pTTCEE,S1pTTCEH):
         self.provide_ts(args)
         data_pTTs = self._process_eventpTT(args, xml_allocation,S1pTTCEE,S1pTTCEH)
-        print(data_pTTs)
-        self.data_packerpTT =  data_pTTs
+        self.pTT_packer =  data_pTTs
+
 
 
 #######################################################################################
