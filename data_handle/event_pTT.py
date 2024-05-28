@@ -151,7 +151,7 @@ def provide_event(ev, gen):
     # sorting by transverse energy, simulating the ECONT_T
     sorted_sci = sorted_sci[ak.argsort(sorted_sci['good_tc_pt'], ascending=False)][0]
   
-    return EventData(sorted_si, sorted_sci,sorted_ts, sorted_stc,gen)
+    return EventData(sorted_si, sorted_sci,gen)
 
 
 
