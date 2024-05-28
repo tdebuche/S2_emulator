@@ -30,7 +30,7 @@ def read_xml():
                     frame  = int(frame_element.get('id'))
                     column = int(frame_element.get('column'))
                     module = hex(int(frame_element.get('Module'),16))
-                    n_link = 14 + 14*math.floor(channel/3) + S1_index
+                    n_link = 14 + 14*math.floor(channel/2) + S1_index
                     index  = int(frame_element.get('index'))
                     reversed_data_si[module].append({'column' : column,
                                                      'frame'  : frame, 
