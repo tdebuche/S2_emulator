@@ -26,7 +26,7 @@ def read_xml_plot(Edges):
             for frame_element in channel_element.findall('.//Frame'):
                 if all(attr in frame_element.attrib for attr in ['id','pTT']):
                     frame  = int(frame_element.get('id'))
-                    pTT     = hex(int(frame_element.get('pTT'),16))
+                    pTT     = frame_element.get('pTT')
                     n_link = 14 + 14*math.floor(channel/2) + S1_index
                     S1Board,eta,phi = get_pTT_numbers(pTT)
                     data_pTT[(S1Board,eta,phi)].append((frame,n_link,channel))
