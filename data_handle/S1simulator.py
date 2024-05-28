@@ -16,6 +16,7 @@ def build_pTTsCEE(ts_energy, args, S1pTTCEE):
                 energy = ModulesCEE[module_idx]['module_energy']
                 energyCEE += ts_energy[module_id] * energy/16
             pTTsCEE.append({'pTT_id' : pTT_id, 'energy': energy})
+    print(pTTsCEE)
     return(pTTsCEE)
 
 
