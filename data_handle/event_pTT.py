@@ -37,7 +37,7 @@ class EventData():
     def ObjectType(self, object_type):
         return ((object_type & 0xF) << 22)
     
-    def get_module_id(Sector,self, plane, u, v):
+    def get_module_id(self,Sector, plane, u, v):
         # CMSSW to our u v convention u'=v-u, v'=v
         # print('Analysing module ', plane, v-u, v)
         if plane & ~0x3F : return 0 # raise Exception( "Invalid plane" )
