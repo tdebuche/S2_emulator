@@ -30,7 +30,7 @@ def read_xml():
                     frame  = int(frame_element.get('id'))
                     column = int(frame_element.get('column'))
                     module = hex(int(frame_element.get('Module'),16))
-                    n_link = 14 + 14*math.floor(channel/2) + S1_index
+                    n_link = 14 + 14*math.floor(channel/3) + S1_index
                     index  = int(frame_element.get('index'))
                     reversed_data_si[module].append({'column' : column,
                                                      'frame'  : frame, 
@@ -80,7 +80,7 @@ def read_xml_pTTs(Edges):
                 if all(attr in frame_element.attrib for attr in ['id','pTT']):
                     frame  = int(frame_element.get('id'))
                     pTT     = hex(int(frame_element.get('pTT'),16))
-                    n_link = 14 + 14*math.floor(channel/3) + S1_index
+                    n_link = 14 + 14*math.floor(channel/2) + S1_index
                     reversed_data_pTT[pTT].append({'frame'  : frame, 
                                                   'channel': channel, 
                                                   'n_link' : n_link,})
