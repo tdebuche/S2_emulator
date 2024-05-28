@@ -11,9 +11,6 @@ from cppyy.gbl import l1thgcfirmware, std
 import data_handle.plot_tools as plot
 from data_handle.tools import compress_value, printProgressBar
 
-import data_handle.plot_tools as plot
-from data_handle.tools import compress_value, printProgressBar
-        
 
 class EventData():
     def __init__(self, ds_si, ds_sci, gen):
