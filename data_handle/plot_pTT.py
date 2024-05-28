@@ -50,8 +50,8 @@ def create_energies(data_links,args):
 
 
 def get_pTT_numbers(pTT):
-    S1Board = pTT & 0x3F0000
-    eta = pTT & 0x3E0
-    phi = pTT & 0x1F
+    S1Board = int(pTT,16) & 0x3F0000
+    eta = int(pTT,16) & 0x3E0
+    phi = int(pTT,16) & 0x1F
     return(S1Board,eta,phi)
     
