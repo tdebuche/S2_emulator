@@ -14,7 +14,8 @@ def build_pTTsCEE(ts_energy, args, S1pTTCEE):
             for module_idx in range(len(ModulesCEE)):
                 module_id = ModulesCEE[module_idx]['module_id']
                 energy = ModulesCEE[module_idx]['module_energy']
-                energyCEE += ts_energy[module_id][0] * energy/16
+                if ts_energy[module_id] != []:
+                    energyCEE += ts_energy[module_id][0] * energy/16
             pTTsCEE.append({'pTT_id' : pTT_id, 'energy': energyCEE})
     print(pTTsCEE)
     return(pTTsCEE)
@@ -33,7 +34,8 @@ def build_pTTsCEH(stc_energy,args,S1pTTCEH):
             module_id = ModulesCEE[stc_idx]['stc_id']
             stc = ModulesCEE[stc_idx]['module_idx']
             energy = ModulesCEH[module_idx]['stc_energy']
-            energyCEH += stc_energy[module_id][0][stc] * energy/16
+            if stc_energy[module_id] != []:
+                energyCEH += stc_energy[module_id][0][stc] * energy/16
         pTTsCEE.append({'pTT_id' : pTT_id, 'energy': energyCEH})
     return(pTTsCEH)
                     
