@@ -17,8 +17,8 @@ def build_pTTsCEE(ts_energy, args, S1pTTCEE):
                 if ts_energy[module_id] != []:
                     energyCEE += ts_energy[module_id][0] * energy/16
             pTTsCEE.append({'pTT_id' : pTT_id, 'energy': energyCEE})
-            if energyCEE != 0:
-                print({'pTT_id' : pTT_id, 'energy': energyCEE})
+            #if energyCEE != 0:
+                #print({'pTT_id' : pTT_id, 'energy': energyCEE})
 
     return(pTTsCEE)
 
