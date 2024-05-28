@@ -4,8 +4,6 @@ import awkward as ak
 import uproot
 import math
 import yaml
-import cppyy
-from cppyy.gbl import l1thgcfirmware, std
 import S1simulator
 
 import data_handle.plot_tools as plot
