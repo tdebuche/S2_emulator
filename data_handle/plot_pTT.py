@@ -15,7 +15,7 @@ def read_xml_plot(Edges):
         tree = ET.parse('config_files/AllocationpTTsNoEdges.xml')
         
     root = tree.getroot()
-    reversed_data_pTT  = defaultdict(list)
+    data_pTT  = defaultdict(list)
 
     S1_index = 0
     for s1_element in root.findall('.//S1'):
@@ -26,7 +26,28 @@ def read_xml_plot(Edges):
                     frame  = int(frame_element.get('id'))
                     pTT     = hex(int(frame_element.get('pTT'),16))
                     n_link = 14 + 14*math.floor(channel/2) + S1_index
-                    reversed_data_pTT[(frame,n_link,channel)].append({'S1board': S1board, 'eta': eta ,'phi': phi })
+                    S1Board,eta,phi = get_pTT_numbers(pTT)
+                    data_pTT[(S1Board,eta,phi)].append((frame,n_link,channel))
 
         S1_index += 1
-    return reversed_data_pTT
+    return data_pTT
+
+
+def create_energies(data_links,etaphi_links,Edges):
+    if Edges == 'yes': nb_phi = 28
+    else : nb_phi = 24
+    energies = [[0 for phi in range(nb_phi)]for eta in range(20)]
+    for S1Board in range(14):
+        for eta in range(20):
+            for phi in range(nb_phi):
+                if data_links[etaphi_links[(S1Board,eta,phi)]] != []:
+                    energies[eta][phi] += data_links[etaphi_links[(S1Board,eta,phi)][0]][0]
+    return energies
+
+
+def get_pTT_numbers(pTT):
+    S1Board = pTT & 0x3F0000
+    eta = pTT & 0x3E0
+    phi = pTT & 0x1F
+    return(S1Board,eta,phi)
+    
