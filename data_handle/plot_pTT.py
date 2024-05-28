@@ -29,8 +29,8 @@ def read_xml_plot(Edges):
                     pTT     = frame_element.get('pTT')
                     n_link = 14 + 14*math.floor(channel/2) + S1_index
                     S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
-                    data_pTT[(S1Board,eta,phi)].append((CEECEH))
-                    #(frame,n_link,channel)
+                    data_pTT[(S1Board,eta,phi,CEECEH )].append((frame,n_link,channel))
+                    
 
         S1_index += 1
     return data_pTT
@@ -46,8 +46,8 @@ def create_energies(data_links,args):
     for S1Board in range(14):
         for eta in range(20):
             for phi in range(nb_phi):
-                if data_links[etaphi_links[(S1Board,eta,phi)][0]] != []:
-                    energies[eta][phi] += data_links[etaphi_links[(S1Board,eta,phi)][0]][0]
+                if data_links[etaphi_links[(S1Board,eta,phi,0)][0]] != []:
+                    energies[eta][phi] += data_links[etaphi_links[(S1Board,eta,phi,0)][0]][0]
     return energies
 
 
