@@ -183,5 +183,5 @@ def read_txt_pTTs(Edges,Sector):
     return(pTTs_CEE,pTTs_CEH)
 
 print(read_xml_pTTs('no'))
-print(read_txt_pTTs('no',0)[20])
+print(read_txt_pTTs('no',0)[0][20])
     
