@@ -4,7 +4,7 @@ import awkward as ak
 import uproot
 import math
 import yaml
-import data_handle.S1simulator
+import build_pTTsCEE from data_handle.S1simulator
 import cppyy
 from cppyy.gbl import l1thgcfirmware, std
 
@@ -82,7 +82,7 @@ class EventData():
     def _process_eventpTT(self,args, xml_allocation, xml_duplication,S1pTTCEE,S1pTTCEH):
         data_pTTs = std.map[int,std.map[int,std.map[int,'std::vector<long int>']]]()
         Sector = args.Sector
-        self.ds_pTTs = S1simulator.build_pTTsCEE(self.ds_ts, args, S1pTTCEE)
+        self.ds_pTTs = build_pTTsCEE(self.ds_ts, args, S1pTTCEE)
         pTTs = self.ds_pTTs
         
         for pTT_idx in range(len(pTTs)):
