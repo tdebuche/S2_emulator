@@ -37,7 +37,6 @@ S1pTTCEE,S1pTTCEH = read_txt_pTTs(args.Edges,args.Sector)
 xml_allocation = read_xml_pTTs(args.Edges)
 
 events = provide_events(args.n, args.particles, args.pileup)
-
-events._pTT_packer(args, xml_allocation,S1pTTCEE,S1pTTCEH)
-
-print(events.pTT_packer)
+for idx, event in enumerate(events):
+  event._pTT_packer(args, xml_allocation,S1pTTCEE,S1pTTCEH)
+  print(event.pTT_packer)
