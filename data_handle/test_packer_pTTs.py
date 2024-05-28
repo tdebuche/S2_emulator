@@ -6,10 +6,10 @@ import yaml
 import os
 import argparse
 
-from S1simulator import build_pTTsCEE
-from geometry import read_txt_pTTs
-from geometry import read_xml_pTTs
-from event_pTT import provide_events
+from data_handle.S1simulator import build_pTTsCEE
+from data_handle.geometry import read_txt_pTTs
+from data_handle.geometry import read_xml_pTTs
+from data_handle.event_pTT import provide_events
 
 parser = argparse.ArgumentParser(description='Stage-2 Emulator Parameters')
 parser.add_argument('-n',          type=int, default=1,         help='Provide the number of events')
