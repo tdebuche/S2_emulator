@@ -33,7 +33,8 @@ def read_xml_plot(Edges):
     return data_pTT
 
 
-def create_energies(data_links,Edges):
+def create_energies(data_links,args):
+    Edges = args.Edges
     etaphi_links = read_xml_plot(Edges)
     if Edges == 'yes': nb_phi = 28
     else : nb_phi = 24
