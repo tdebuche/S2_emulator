@@ -14,9 +14,9 @@ class EventData():
     def __init__(self, ds_si, ds_sci, gen):
         self.ds_si  = ds_si
         self.ds_sci  = ds_sci
-        self.ds_ts = ds_ts
-        self.ds_stc = ds_stc
-        self.ds_pTTs = ds_pTTs
+        self.ds_ts = None
+        self.ds_stc = None
+        self.ds_pTTs = None
         self.gen     = gen
         self.event   = gen.event
         self.eta_gen = gen.good_genpart_exeta[0]
