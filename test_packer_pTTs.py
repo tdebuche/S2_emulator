@@ -40,5 +40,5 @@ events = provide_events(args.n, args.particles, args.pileup)
 for idx, event in enumerate(events):
   event._pTT_packer(args, xml_allocation,S1pTTCEE,S1pTTCEH)
   #event.provide_ts(args)
-  print(event.pTT_packer[20])
+  print(event.pTT_packer)
   print(event.ds_ts[20])
