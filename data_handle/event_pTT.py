@@ -91,7 +91,6 @@ class EventData():
             pTT_xml = self.get_pTT_allocation(xml_allocation, pTT)
             if pTT_xml != [] :    #if pTT is allocated in the 4 links
                 data_pTTs[(pTT_xml[0]['frame'],pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTs[pTT_idx]['energy'])
-        print(data_pTTs)
 
         return data_pTTs
 
@@ -99,6 +98,7 @@ class EventData():
     def _pTT_packer(self, args, xml_allocation,S1pTTCEE,S1pTTCEH):
         self.provide_ts(args)
         data_pTTs = self._process_eventpTT(args, xml_allocation,S1pTTCEE,S1pTTCEH)
+        print(data_pTTs)
         self.data_packerpTT =  data_pTTs
 
 
