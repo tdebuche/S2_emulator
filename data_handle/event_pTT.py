@@ -90,6 +90,9 @@ class EventData():
             pTT = pTTs[pTT_idx]['pTT_id']
             pTT_xml = self.get_pTT_allocation(xml_allocation, pTT)
             if pTT_xml != [] :    #if pTT is allocated in the 4 links
+                print(pTT_xml[0]['frame'])
+                print(pTT_xml[0]['n_link'])
+                print(pTT_xml[0]['channel'])
                 data_pTTs[pTT_xml[0]['frame']][pTT_xml[0]['n_link']][pTT_xml[0]['channel']%2]  = [pTTs[pTT_idx]['energy']]
 
         return data_pTTs
