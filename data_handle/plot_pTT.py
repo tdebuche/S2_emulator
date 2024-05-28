@@ -29,7 +29,7 @@ def read_xml_plot(Edges):
                     pTT     = frame_element.get('pTT')
                     n_link = 14 + 14*math.floor(channel/2) + S1_index
                     S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
-                    data_pTT[(S1Board,eta,phi,CEECEH )].append((frame,n_link,channel))
+                    data_pTT[(S1Board,eta,phi,CEECEH )].append((frame,n_link,channel%2))
                     
 
         S1_index += 1
