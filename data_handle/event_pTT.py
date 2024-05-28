@@ -80,7 +80,7 @@ class EventData():
         #    pTT_id = '0x'+ str(0) +pTT_id[2:]
         return pTT_id
         
-    def _process_eventpTT(self,args, xml_allocation, xml_duplication,S1pTTCEE,S1pTTCEH):
+    def _process_eventpTT(self,args, xml_allocation,S1pTTCEE,S1pTTCEH):
         data_pTTs = std.map[int,std.map[int,std.map[int,'std::vector<long int>']]]()
         Sector = args.Sector
         self.ds_pTTs = build_pTTsCEE(self.ds_ts, args, S1pTTCEE)
