@@ -86,7 +86,7 @@ def read_xml_pTTs(Edges):
                                                   'n_link' : n_link,})
 
         S1_index += 1
-    return [reversed_data_pTT]
+    return reversed_data_pTT
 
 def get_pTT_id(Sector, S1Board, CEECEH, x):
     eta = x[x.find('eta')+3]
