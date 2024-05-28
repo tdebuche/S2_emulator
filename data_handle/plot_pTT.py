@@ -46,8 +46,9 @@ def create_energies(data_links,args):
     for S1Board in range(14):
         for eta in range(20):
             for phi in range(nb_phi):
-                if data_links[etaphi_links[(S1Board,eta,phi,0)][0]] != []:
-                    energies[eta][phi] += data_links[etaphi_links[(S1Board,eta,phi,0)][0]][0]
+                if etaphi_links[(S1Board,eta,phi,0)] != []:
+                    if data_links[etaphi_links[(S1Board,eta,phi,0)][0]] != []:
+                        energies[eta][phi] += data_links[etaphi_links[(S1Board,eta,phi,0)][0]][0]
     return energies
 
 
