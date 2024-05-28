@@ -5,6 +5,11 @@ import uproot
 import math
 import yaml
 import data_handle.S1simulator
+import cppyy
+from cppyy.gbl import l1thgcfirmware, std
+
+import data_handle.plot_tools as plot
+from data_handle.tools import compress_value, printProgressBar
 
 import data_handle.plot_tools as plot
 from data_handle.tools import compress_value, printProgressBar
