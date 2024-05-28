@@ -57,14 +57,15 @@ class EventData():
         TCs = self.ds_si
         ts = defaultdict(list)
         Sector = args.Sector
-        for module_idx in range(len(self.ds_si)):
+        for module_idx in range(len(self.ds_si.good_tc_layer)):
             module = self.get_module_id(Sector,
                                         self.ds_si.good_tc_layer[module_idx][0],
                                         self.ds_si.good_tc_waferu[module_idx][0],
                                         self.ds_si.good_tc_waferv[module_idx][0])
-            if ts[module] == []:
-                ts[module].append(0)
-            ts[module][0] += self.ds_si.good_tc_pt[module_idx][0]
+            if self.ds_si.good_tc_layer < 27:
+                if ts[module] == []:
+                    ts[module].append(0)
+                ts[module][0] += self.ds_si.good_tc_pt[module_idx][0]
         self.ds_ts = ts
             
                 
