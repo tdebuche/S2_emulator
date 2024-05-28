@@ -57,4 +57,30 @@ def get_pTT_numbers(pTT):
     eta = (int(pTT,16) & 0x3E0) //(16 * 2)
     CEECEH = (int(pTT,16) & 0x400) //(16*16*4)
     return(S1Board,eta,phi,CEECEH)
+
+def create_bins(args):
+    if Edges == 'yes': 
+        nb_phi = 28
+        phimin =-15 * np.pi/180
+    else : 
+        nb_phi = 24
+        phimin =  0 * np.pi/180
+    etamin = 1.305
+    L = [[[]for phi in range(nb_phi)]for eta in range(20)]
+    BinsXY =[[[]for phi in range(nb_phi)]for eta in range(20)] 
+    for eta in range(20):
+        for phi in range(nb_phi):
+            vertices = np.array([[eta * np.pi/36 + etamin,(eta+1) * np.pi/36 + etamin,
+                    (eta+1) * np.pi/36 + etamin,eta * np.pi/36 + etamin],
+                   [phi * np.pi/36  + phimin,phi * np.pi/36 + phimin,
+                    (phi+1) * np.pi/36 + phimin,(phi+1) * np.pi/36 + phimin]])
+            verticesXY = etaphitoXY(vertices[0],vertices[1],1)
+            BinsXY[eta][phi].append([verticesXY[0],verticesXY[1])
+    return BinsXY
+            
+
     
+def etaphitoXY(eta,phi,z):
+    x = z * np.tan(2*np.arctan(np.exp(-eta))) * np.cos(phi)
+    y = z * np.tan(2*np.arctan(np.exp(-eta))) * np.sin(phi)
+    return(x,y)
