@@ -182,5 +182,6 @@ def read_txt_pTTs(Edges,Sector):
             pTTs_CEH.append(read_pTT(x,S1Board,1,Sector))
     return(pTTs_CEE,pTTs_CEH)
 
-print(read_xml_pTTs('no'))
+print(read_xml_pTTs('no')[20])
+print(read_txt_pTTs('no')[20])
     
