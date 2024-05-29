@@ -47,5 +47,5 @@ for idx, event in enumerate(events):
   #event.provide_ts(args)
   print(event.pTT_packer)
   print(event.ds_ts)
-  print(create_energies(event.pTT_packer,args))
+  print(create_energies(event.pTT_packer,xml_plot,args))
   record_plot(event.pTT_packer,xml_plot,args)
