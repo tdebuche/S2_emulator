@@ -121,7 +121,7 @@ def record_plot(data_links,etaphi_links,args,title):
     for eta in range(len(BinXY)):
         for phi in range(len(BinXY[0])):
             plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1],color = 'black')
-            plt.fill(BinXY[eta][phi][0],BinXY[eta][phi][0],c = colors(weights[res]/weigthmax))
+            plt.fill(BinXY[eta][phi][0],BinXY[eta][phi][0],c = colors(weights[res]/weightmax))
             res +=1
             #if energies[eta][phi] != 100000:
                 #plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
