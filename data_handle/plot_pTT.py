@@ -109,15 +109,11 @@ def record_plot(data_links,etaphi_links,args):
             pointXY[1].append(np.sum(np.array(BinXY[eta][phi][1][0:4]))/4)
     sc = plt.scatter(pointXY[0],pointXY[1],c=weights, vmin=0)
     plt.colorbar(sc)
-    #plt.xticks(X)
-    #plt.yticks(Y)
-    #plt.grid()
-    plt.show()
                 
-    #for eta in range(len(BinXY)):
-    #    for phi in range(len(BinXY[0])):
-    #        plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1],color = 'black')
-    #       if energies[eta][phi] != 100000:
-    #            plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
+    for eta in range(len(BinXY)):
+        for phi in range(len(BinXY[0])):
+            plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1],color = 'black')
+           if energies[eta][phi] != 100000:
+                plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
     plt.show()
     
