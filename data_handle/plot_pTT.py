@@ -74,9 +74,9 @@ def create_bins(args):
                     (eta+1) * np.pi/36 + etamin,eta * np.pi/36 + etamin],
                    [phi * np.pi/36  + phimin,phi * np.pi/36 + phimin,
                     (phi+1) * np.pi/36 + phimin,(phi+1) * np.pi/36 + phimin]])
-            verticesXY = etaphitoXY(vertices[0],vertices[1],1)
-            BinsXY[eta][phi].append(verticesXY[0])
-            BinsXY[eta][phi].append(verticesXY[1])
+            verticesXY = etaphitoXY(vertices[0],vertices[1],1).tolist()
+            BinsXY[eta][phi].append(verticesXY[0]+verticesXY[0][0])
+            BinsXY[eta][phi].append(verticesXY[1]+verticesXY[1][0])
     return BinsXY
             
 
@@ -90,9 +90,9 @@ def etaphitoXY(eta,phi,z):
 def record_plot(data_links,etaphi_links,args):
     energies = create_energies(data_links,etaphi_links,args)
     BinXY = create_bins(args)
-    plt.figure(figsize = (11,8))
+    plt.figure(figsize = (12,8))
     for eta in range(len(BinXY)):
         for phi in range(len(BinXY[0])):
-            plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1])
+            plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1],color = 'black')
     plt.show()
     
