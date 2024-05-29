@@ -27,7 +27,7 @@ args = parser.parse_args()
 
 events = provide_events(args.n, args.particles, args.pileup)
 for idx, event in enumerate(events):
-    print(event[0])
+    print(event[0]['good_tc_layer])
     plot_uv(event)
   
 
