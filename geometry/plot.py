@@ -48,7 +48,7 @@ def plot_uv(event):
             plt.scatter(TCs['good_tc_x'],TCs['good_tc_y'])
             for TC_idx in range(len(TCs['good_tc_layer'])):
                 #if TCs[TC_idx]['good_tc_waferu'] :
-                plt.annotate('('+str(TCs[TC_idx]['good_tc_waferu'])+','+str(TCs[TC_idx]['good_tc_waferv'])+')',(TCs[TC_idx]['good_tc_x'],TCs[TC_idx]['good_tc_y']))
+                plt.annotate('('+str(TCs['good_tc_waferu'][TC_idx])+','+str(TCs['good_tc_waferv'][TC_idx])+')',(TCs['good_tc_x'][TC_idx],TCs['good_tc_y'][TC_idx]))
             plt.savefig('geometry/plot_geometry/'+ 'Layer' +str(layer)+'.png')
   
 
