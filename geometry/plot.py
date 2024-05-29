@@ -58,7 +58,7 @@ def plot_uv(event):
                     if module[0][i]!=0 or module[1][i]!=0:
                         a+=1
                 if a != 0:
-                    plt.plot(module[0][0:a] + module[0][0],module[1][0:a] + module[1][0],color = 'black')
+                    plt.plot(module[0][0:a] + [module[0][0]],module[1][0:a] + [module[1][0]],color = 'black')
             for TC_idx in range(len(TCs['good_tc_layer'])):
                 #if TCs[TC_idx]['good_tc_waferu'] :
                 plt.annotate('('+str(TCs['good_tc_waferu'][TC_idx])+','+str(TCs['good_tc_waferv'][TC_idx])+')',(TCs['good_tc_x'][TC_idx],TCs['good_tc_y'][TC_idx]))
