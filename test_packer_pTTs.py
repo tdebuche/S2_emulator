@@ -36,6 +36,7 @@ args = parser.parse_args()
 
 S1pTTCEE,S1pTTCEH = read_txt_pTTs(args.Edges,args.Sector)
 xml_allocation = read_xml_pTTs(args.Edges)
+xml_plot = read_xml_plot(args.Edges)
 
 events = provide_events(args.n, args.particles, args.pileup)
 for idx, event in enumerate(events):
@@ -44,3 +45,4 @@ for idx, event in enumerate(events):
   print(event.pTT_packer)
   print(event.ds_ts)
   print(create_energies(event.pTT_packer,args))
+  record_plot(event.pTT_packer,xml_plot,args)
