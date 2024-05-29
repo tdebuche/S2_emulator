@@ -74,7 +74,7 @@ def create_bins(args):
                    [phi * np.pi/36  + phimin,phi * np.pi/36 + phimin,
                     (phi+1) * np.pi/36 + phimin,(phi+1) * np.pi/36 + phimin]])
             verticesXY = etaphitoXY(vertices[0],vertices[1],1)
-            BinsXY[eta][phi].append([verticesXY[0],verticesXY[1])
+            BinsXY[eta][phi].append([verticesXY[0],verticesXY[1]])
     return BinsXY
             
 
