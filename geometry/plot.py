@@ -49,7 +49,7 @@ def plot_uv(event):
         if not ((layer)<27 & (layer%2 ==0)):
             plt.figure(figsize = (12,8))
             TCs = event[event['good_tc_layer']==layer][0]
-            plt.scatter(TCs['good_tc_x']*100,TCs['good_tc_y']*100)
+            plt.scatter(TCs['good_tc_x']*10,TCs['good_tc_y']*10)
             modules = Modules[layer]
             for module_idx in range(len(modules)):
                 module = modules[module_idx]
@@ -61,7 +61,7 @@ def plot_uv(event):
                     plt.plot(module[0][0:a] + [module[0][0]],module[1][0:a] + [module[1][0]],color = 'black')
             for TC_idx in range(len(TCs['good_tc_layer'])):
                 #if TCs[TC_idx]['good_tc_waferu'] :
-                plt.annotate('('+str(TCs['good_tc_waferu'][TC_idx])+','+str(TCs['good_tc_waferv'][TC_idx])+')',(TCs['good_tc_x'][TC_idx]*100,TCs['good_tc_y'][TC_idx]*100))
+                plt.annotate('('+str(TCs['good_tc_waferu'][TC_idx])+','+str(TCs['good_tc_waferv'][TC_idx])+')',(TCs['good_tc_x'][TC_idx]*10,TCs['good_tc_y'][TC_idx]*10))
             plt.savefig('geometry/plot_geometry/'+ 'Layer' +str(layer)+'.png')
   
 
