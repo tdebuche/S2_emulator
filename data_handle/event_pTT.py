@@ -40,12 +40,7 @@ class EventData():
         return ((object_type & 0xF) << 22)
     
     def get_module_id(self,Sector, plane, u, v):
-        # CMSSW to our u v convention u'=v-u, v'=v
-        # print('Analysing module ', plane, v-u, v)
-        if plane & ~0x3F : return 0 # raise Exception( "Invalid plane" )
-        if v-u & ~0xF : return 0 # raise Exception( "Invalid u" )
-        if v   & ~0xF : return 0 # raise Exception( "Invalid v" )
-        return hex(0x00000000 |  ((Sector & 0x3) << 29) | ((0 & 0x3) << 26)  | ((0 & 0xF) << 22) | ((plane & 0x3F) << 16) | ((plane & 0x3F) << 16) | ((v-u & 0xF) << 12) | ((v & 0xF) << 8))
+        return hex(0x00000000 |  ((Sector & 0x3) << 29) | ((0 & 0x3) << 26)  | ((0 & 0xF) << 22) |  ((plane & 0x3F) << 16) | ((u & 0xF) << 12) | ((v & 0xF) << 8))
 
     def get_pTT_id(self, Sector , S1Board, CEECEH, eta, phi):
         return hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
@@ -53,15 +48,38 @@ class EventData():
     def get_MB_id(self, plane, v, MB):
         return MB[int(plane)][int(v)]
 
+
+    def Sector0(self,layer,u,v):
+        if (layer <34) and (layer != 30) and (layer != 32):
+            if (v-u > 0) and (v >= 0):
+                return(True)
+        if (layer >= 34) and (layer%2 == 0):
+            if (v-u > 0) and (v > 0):
+                return(True)
+        if (layer >= 34) and (layer%2 == 1):
+            if (v-u >= 0) and (v >= 0):
+                return(True)
+        return False
+
+    def getuvsector(self,layer,u,v):
+        if layer <34 and layer != 30 and layer != 32:
+            if v-u > 0 and v >= 0:
+                return(0,v-u,v)
+        if layer
+            
+
     def provide_ts(self,args):
         TCs = self.ds_si
         ts = defaultdict(list)
         Sector = args.Sector
         for module_idx in range(len(self.ds_si.good_tc_layer)):
-            module = self.get_module_id(Sector,
-                                        self.ds_si.good_tc_layer[module_idx][0],
+            u,v,sector = self.getuvsector(self.ds_si.good_tc_layer[module_idx][0],
                                         self.ds_si.good_tc_waferu[module_idx][0],
                                         self.ds_si.good_tc_waferv[module_idx][0])
+            module = self.get_module_id(sector,
+                                        self.ds_si.good_tc_layer[module_idx][0],
+                                        u,
+                                        v)
             if self.ds_si.good_tc_layer[module_idx][0] < 27:
                 if ts[module] == []:
                     ts[module].append(0)
