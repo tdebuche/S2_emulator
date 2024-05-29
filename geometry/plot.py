@@ -45,7 +45,7 @@ def provide_events(n, particles, PU):
 def plot_uv(event):
     Modules = np.load('geometry/ModulesGeometry.npy')
     Modules = Modules.tolist()
-    for layer in range(5):
+    for layer in range(48):
         L = []
         if not ((layer<27) & (layer%2 ==0)):
             plt.figure(figsize = (12,8))
