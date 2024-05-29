@@ -1,5 +1,5 @@
-from geometry.plot import plot
-from geometry.plot import provide_events
+from geometry import plot
+from geometry import provide_events
 import numpy as np
 import awkward as ak
 import uproot
