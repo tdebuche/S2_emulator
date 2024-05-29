@@ -39,7 +39,6 @@ def provide_events(n, particles, PU):
     for ev in range(n):
       data = tree.arrays(branches_tc, entry_start=ev, entry_stop=ev+1, library='ak')
       events_ds.append(data)
-      printProgressBar(ev+1, n, prefix='Reading '+str(n)+' events from ROOT file:', suffix='Complete', length=50)
     return events_ds
 
 def plot_uv(event):
