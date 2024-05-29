@@ -27,7 +27,7 @@ args = parser.parse_args()
 
 events = provide_events(args.n, args.particles, args.pileup)
 for idx, event in enumerate(events):
-    print(event)
+    print(event[0][0])
     plot_uv(event)
   
 
