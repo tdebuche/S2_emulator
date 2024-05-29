@@ -115,6 +115,5 @@ def record_plot(data_links,etaphi_links,args,title):
             plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1],color = 'black')
             #if energies[eta][phi] != 100000:
                 #plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
-    os.chdir(plot_pTTs)
-    plt.savefig(title +'.png')
+    plt.savefig('plot_pTTs/'+title +'.png')
     
