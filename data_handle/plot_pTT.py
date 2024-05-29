@@ -96,7 +96,7 @@ def etaphitoXY(eta,phi,z):
 def record_plot(data_links,etaphi_links,args,title):
     energies = create_energies(data_links,etaphi_links,args)
     BinXY = create_bins(args)
-    plt.figure(figsize = (12,8))
+    plt.figure(figsize = (14,8))
     X =[]
     Y = []
     pointXY = [[],[]]
