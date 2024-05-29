@@ -8,7 +8,7 @@ import argparse
 import numpy as np
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-
+import matplotlib.pyplot as plt
 
 def read_xml_plot(Edges):
     if Edges == 'yes':
