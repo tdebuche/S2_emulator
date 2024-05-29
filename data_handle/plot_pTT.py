@@ -36,9 +36,8 @@ def read_xml_plot(Edges):
     return data_pTT
 
 
-def create_energies(data_links,args):
+def create_energies(data_links,etaphi_links,args):
     Edges = args.Edges
-    etaphi_links = read_xml_plot(Edges)
     if Edges == 'yes': nb_phi = 28
     else : nb_phi = 24
     energies = [[0 for phi in range(nb_phi)]for eta in range(20)]
@@ -84,3 +83,14 @@ def etaphitoXY(eta,phi,z):
     x = z * np.tan(2*np.arctan(np.exp(-eta))) * np.cos(phi)
     y = z * np.tan(2*np.arctan(np.exp(-eta))) * np.sin(phi)
     return(x,y)
+
+
+def record_plot(data_links,etaphi_links,args):
+    energies = create_energies(data_links,etaphi_links,args)
+    BinXY = create_bins(args)
+    plt.figure(figsize = (11,8))
+    for eta in range(len(BinXY)):
+        for phi in range(len(BinXY[0])):
+            plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1])
+    plt.show()
+    
