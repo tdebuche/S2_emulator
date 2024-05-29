@@ -17,6 +17,8 @@ import matplotlib.pyplot as plt
 ############################### PROVIDE EVENTS ########################################
 #######################################################################################
 
+modules = np.load('geometry/Modules.npy')
+
 with open('config.yaml', "r") as afile:
     cfg_particles = yaml.safe_load(afile)["particles"]
 
