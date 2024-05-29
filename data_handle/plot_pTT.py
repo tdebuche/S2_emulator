@@ -109,9 +109,9 @@ def record_plot(data_links,etaphi_links,args):
             pointXY[1].append(np.sum(np.array(BinXY[eta][phi][1][0:4]))/4)
     sc = plt.scatter(pointXY[0],pointXY[1],c=weights, vmin=0)
     plt.colorbar(sc)
-    plt.xticks(X)
-    plt.yticks(Y)
-    plt.grid()
+    #plt.xticks(X)
+    #plt.yticks(Y)
+    #plt.grid()
     plt.show()
                 
     #for eta in range(len(BinXY)):
