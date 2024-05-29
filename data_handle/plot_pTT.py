@@ -47,6 +47,8 @@ def create_energies(data_links,etaphi_links,args):
                 if etaphi_links[(S1Board,eta,phi,0)] != []:
                     if data_links[etaphi_links[(S1Board,eta,phi,0)][0]] != []:
                         energies[eta][phi] += data_links[etaphi_links[(S1Board,eta,phi,0)][0]][0]
+                else :
+                    energies[eta][phi] = 100000
     return energies
 
 
@@ -94,6 +96,7 @@ def record_plot(data_links,etaphi_links,args):
     for eta in range(len(BinXY)):
         for phi in range(len(BinXY[0])):
             plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1],color = 'black')
-            plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
+            if energies[eta][phi] != 100000:
+                plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
     plt.show()
     
