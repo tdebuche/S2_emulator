@@ -58,6 +58,7 @@ def get_pTT_numbers(pTT):
     return(S1Board,eta,phi,CEECEH)
 
 def create_bins(args):
+    Edges = args.Edges
     if Edges == 'yes': 
         nb_phi = 28
         phimin =-15 * np.pi/180
