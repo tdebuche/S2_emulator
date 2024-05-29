@@ -110,11 +110,12 @@ def record_plot(data_links,etaphi_links,args,title):
             pointXY[1].append(np.sum(np.array(BinXY[eta][phi][1][0:4]))/4)
     sc = plt.scatter(pointXY[0],pointXY[1],c=weights, vmin=0)
     plt.colorbar(sc)
-                
+    res = 0            
     for eta in range(len(BinXY)):
         for phi in range(len(BinXY[0])):
             plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1],color = 'black')
-            plt.fill(BinXY[eta][phi][0],BinXY[eta][phi][0],c = weights[eta][phi])
+            plt.fill(BinXY[eta][phi][0],BinXY[eta][phi][0],c = weights[res])
+            res +=1
             #if energies[eta][phi] != 100000:
                 #plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
     plt.savefig('plot_pTTs/'+title +'.png')
