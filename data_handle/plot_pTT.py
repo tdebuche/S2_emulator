@@ -93,10 +93,29 @@ def record_plot(data_links,etaphi_links,args):
     energies = create_energies(data_links,etaphi_links,args)
     BinXY = create_bins(args)
     plt.figure(figsize = (12,8))
+    X =[]
+    Y = []
+    pointXY = [[],[]]
+    weights = []
     for eta in range(len(BinXY)):
         for phi in range(len(BinXY[0])):
-            plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1],color = 'black')
+            X.append(BinXY[eta][phi][0][0])
+            Y.append(BinXY[eta][phi][1][0])
+            weights.append(energies[eta][phi])
             if energies[eta][phi] != 100000:
-                plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
+                pointXY[0].append(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4)
+                pointXY[1].append(np.sum(np.array(BinXY[eta][phi][1][0:4]))/4)
+    sc = plt.scatter(X,Y,c=weights, vmin=0)
+    plt.colorbar(sc)
+    plt.xticks(X)
+    plt.yticks(Y)
+    plt.grid()
+    plt.show()
+                
+    #for eta in range(len(BinXY)):
+    #    for phi in range(len(BinXY[0])):
+    #        plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1],color = 'black')
+    #       if energies[eta][phi] != 100000:
+    #            plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
     plt.show()
     
