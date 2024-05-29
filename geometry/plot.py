@@ -35,7 +35,6 @@ def provide_events(n, particles, PU):
 
     tree = uproot.open(filepath)[name_tree]
     events_ds = []
-    printProgressBar(0, n, prefix='Reading '+str(n)+' events from ROOT file:', suffix='Complete', length=50)
     for ev in range(n):
       data = tree.arrays(branches_tc, entry_start=ev, entry_stop=ev+1, library='ak')
       events_ds.append(data)
