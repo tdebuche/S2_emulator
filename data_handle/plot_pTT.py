@@ -97,16 +97,25 @@ def record_plot(data_links,etaphi_links,args,title):
     energies = create_energies(data_links,etaphi_links,args)
     BinXY = create_bins(args)
     plt.figure(figsize = (12,8))
+    X =[]
+    Y = []
+    pointXY = [[],[]]
     weights = []
     weightmax = 0
     for eta in range(len(BinXY)):
         for phi in range(len(BinXY[0])):
+            X.append(BinXY[eta][phi][0][0])
+            Y.append(BinXY[eta][phi][1][0])
             if energies[eta][phi] != 100000:
                 weights.append(energies[eta][phi])
                 if  energies[eta][phi] > weightmax:
                     weightmax = energies[eta][phi]
             else : 
                 weights.append(0)
+            pointXY[0].append(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4)
+            pointXY[1].append(np.sum(np.array(BinXY[eta][phi][1][0:4]))/4)
+    sc = plt.scatter(pointXY[0],pointXY[1],c=weights, vmin=0)
+    plt.colorbar(sc)
     res = 0 
     colors = cm.get_cmap("viridis", 8)
     for eta in range(len(BinXY)):
