@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 ############################### PROVIDE EVENTS ########################################
 #######################################################################################
 
-modules = np.load('geometry/Modules.npy')
+modules = np.load('geometry/ModulesGeometry.npy')
 
 with open('config.yaml', "r") as afile:
     cfg_particles = yaml.safe_load(afile)["particles"]
@@ -48,6 +48,15 @@ def plot_uv(event):
             plt.figure(figsize = (12,8))
             TCs = event[event['good_tc_layer']==layer][0]
             plt.scatter(TCs['good_tc_x'],TCs['good_tc_y'])
+            modules = modules.tolist()[layer]
+            for module_idx in range(len(modules)):
+                module = modules[module_idx]
+                a = 0 
+                for i in range(6):
+                    if module[0][i]!=0 or module[1][i]!=0:
+                        a+=1
+                if a != 0:
+                    plt.plot(modules[0][0:a+1] + modules[0][0],modules[1][0:a+1] + modules[1][0],color = 'black')
             for TC_idx in range(len(TCs['good_tc_layer'])):
                 #if TCs[TC_idx]['good_tc_waferu'] :
                 plt.annotate('('+str(TCs['good_tc_waferu'][TC_idx])+','+str(TCs['good_tc_waferv'][TC_idx])+')',(TCs['good_tc_x'][TC_idx],TCs['good_tc_y'][TC_idx]))
