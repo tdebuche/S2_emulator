@@ -50,7 +50,7 @@ def plot_uv(event):
         if not ((layer<27) & (layer%2 ==0)):
             plt.figure(figsize = (12,8))
             TCs = event[event['good_tc_layer']==layer][0]
-            plt.scatter(TCs['good_tc_x']*10,TCs['good_tc_y']*10)
+            #plt.scatter(TCs['good_tc_x']*10,TCs['good_tc_y']*10)
             modules = Modules[layer]
             for module_idx in range(len(modules)):
                 module = modules[module_idx]
