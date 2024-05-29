@@ -43,13 +43,14 @@ def provide_events(n, particles, PU):
     return events_ds
 
 def plot_uv(event):
-    modules = np.load('geometry/ModulesGeometry.npy')
+    Modules = np.load('geometry/ModulesGeometry.npy')
+    Modules = Modules.tolist()
     for layer in range(47):
         if not ((layer)<27 & (layer%2 ==0)):
             plt.figure(figsize = (12,8))
             TCs = event[event['good_tc_layer']==layer][0]
             plt.scatter(TCs['good_tc_x'],TCs['good_tc_y'])
-            modules = modules.tolist()[layer]
+            modules = Modules[layer]
             for module_idx in range(len(modules)):
                 module = modules[module_idx]
                 a = 0 
