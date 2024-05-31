@@ -14,8 +14,8 @@ cppyy.include('L1Trigger/L1THGCal/interface/backend_emulator/HGCalLinkTriggerCel
 
 from cppyy.gbl import l1thgcfirmware
 from data_handle.S1simulator import build_pTTsCEE
-from data_handle.geometry import read_txt_pTTs
-from data_handle.geometry import read_xml_pTTs
+from data_handle.read_files_pTTs import read_build_pTTs
+from data_handle.read_files_pTTs import read_allocation_pTTs
 from data_handle.event_pTT import provide_events
 from data_handle.plot_pTT import create_energies
 from data_handle.plot_pTT import record_plot
@@ -37,9 +37,10 @@ parser.add_argument('--Edges',   default = 'no', help='20*24 or 20*28 bins')
 
 args = parser.parse_args()
 
-S1pTTCEE,S1pTTCEH = read_txt_pTTs(args.Edges,args.Sector)
-S1pTTCEE,S1pTTCEH = read_txt_pTTs(args.Edges,args.Sector+1)
-xml_allocation = read_xml_pTTs(args.Edges)
+S1pTTCEE,S1pTTCEH = read_build_pTTs(args.Edges,args.Sector)
+S1pTTCEEdup,S1pTTCEHdup = read_build_pTTs(args.Edges,args.Sector+1)
+xml_allocation = read_allocation_pTTs(args.Edges,args.Sector,4)
+xml_duplication = read_allocation_pTTs(args.Edges,args.Sector,2)
 xml_plot = read_xml_plot(args.Edges)
 
 events = provide_events(args.n, args.particles, args.pileup)
