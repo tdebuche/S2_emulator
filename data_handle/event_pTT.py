@@ -113,7 +113,7 @@ class EventData():
         self.ds_pTTs = build_pTTsCEE(self.ds_ts, args, S1pTTCEE)
         pTTs = self.ds_pTTs
         self.ds_pTTsdup = build_pTTsCEE(self.ds_ts, args, S1pTTCEEdup)
-        pTTsdup = ds_pTTsdup
+        pTTsdup = self.ds_pTTsdup
         
         for pTT_idx in range(len(pTTs)):
             pTT = pTTs[pTT_idx]['pTT_id']
