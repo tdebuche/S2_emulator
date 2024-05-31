@@ -102,7 +102,7 @@ def read_pTT(x,S1Board,CEECEH,Sector):
         cursor = end_module+2+x[end_module+2:].find('(')
     return(pTT)
         
-def read_building_pTTs(Edges,Sector):
+def read_build_pTTs(Edges,Sector):
     if Edges == 'yes':
         fCEE = open('config_files/pTTs/Sector'+str(Sector)+'/CE_E_allBoards_Edges.txt', 'r')
         data_CEE = fCEE.readlines()
