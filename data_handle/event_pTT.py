@@ -109,7 +109,6 @@ class EventData():
         
     def _process_eventpTT(self,args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup):
         data_pTTs = defaultdict(list)
-        data_pTTsdup = defaultdict(list)
         Sector = args.Sector
         self.ds_pTTs = build_pTTsCEE(self.ds_ts, args, S1pTTCEE)
         pTTs = self.ds_pTTs
@@ -125,10 +124,12 @@ class EventData():
             pTT = pTTsdup[pTT_idx]['pTT_id']
             pTT_xml = self.get_pTT_duplication(xml_duplication, pTT)
             if pTT_xml != [] :    #if pTT is allocated in the 2 links
-                data_pTTsdup[(pTT_xml[0]['frame'],pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTsdup[pTT_idx]['energy'])
+                if data_pTTs[(pTT_xml[0]['frame'],69 + pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)] != []:
+                    data_pTTs[(pTT_xml[0]['frame'],69 + pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTsdup[pTT_idx]['energy'])
+                else : print('error in allocation of duplication')
 
 
-        return data_pTTs,data_pTTsdup
+        return data_pTTs
 
 
     def _pTT_packer(self, args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup):
