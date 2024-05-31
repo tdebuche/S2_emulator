@@ -16,9 +16,9 @@ from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 
 def read_xml_plot(Edges):
     if Edges == 'yes':
-        tree = ET.parse('config_files/AllocationpTTsEdges.xml')
+        tree = ET.parse('config_files/pTTs/Sector'+str(Sector)+'/AllocationpTTsEdges.xml')
     if Edges == 'no':
-        tree = ET.parse('config_files/AllocationpTTsNoEdges.xml')
+        tree = ET.parse('config_files/pTTs/Sector'+str(Sector)+'/AllocationpTTsNoEdges.xml')
         
     root = tree.getroot()
     data_pTT  = defaultdict(list)
@@ -32,8 +32,26 @@ def read_xml_plot(Edges):
                     frame  = int(frame_element.get('id'))
                     pTT     = frame_element.get('pTT')
                     n_link = 14 + 14*math.floor(channel/2) + S1_index
-                    S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
-                    data_pTT[(S1Board,eta,phi,CEECEH )].append((frame,n_link,channel%2))
+                    Sector,S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
+                    data_pTT[(Sector,S1Board,eta,phi,CEECEH )].append((frame,n_link,channel%2))
+    if Edges == 'yes':
+        tree = ET.parse('config_files/pTTs/Sector'+str(Sector)+'/DuplicationpTTsEdges.xml')
+    if Edges == 'no':
+        tree = ET.parse('config_files/pTTs/Sector'+str(Sector)+'/DuplicationpTTsNoEdges.xml')
+        
+    root = tree.getroot()
+
+    S1_index = 0
+    for s1_element in root.findall('.//S1'):
+        for channel_element in s1_element.findall('.//Channel'):
+            channel = int(channel_element.get('aux-id'))
+            for frame_element in channel_element.findall('.//Frame'):
+                if all(attr in frame_element.attrib for attr in ['id','pTT']):
+                    frame  = int(frame_element.get('id'))
+                    pTT     = frame_element.get('pTT')
+                    n_link = 14 + 14*math.floor(channel/2) + S1_index + 69
+                    Sector,S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
+                    data_pTT[(Sector,S1Board,eta,phi,CEECEH )].append((frame,n_link,channel%2))
                     
 
         S1_index += 1
@@ -42,15 +60,29 @@ def read_xml_plot(Edges):
 
 def create_energies(data_links,etaphi_links,args):
     Edges = args.Edges
-    if Edges == 'yes': nb_phi = 28
-    else : nb_phi = 24
-    energies = [[0 for phi in range(nb_phi)]for eta in range(20)]
+    if Edges == 'yes': 
+        nb_phi = 28
+        offset = 3
+    else : 
+        nb_phi = 24
+        offset = 0
+        
+    Sector = args.Sector
+    energies = [[0 for phi in range(36)]for eta in range(20)]
     for S1Board in range(14):
         for eta in range(20):
-            for phi in range(nb_phi):
-                if etaphi_links[(S1Board,eta,phi,0)] != []:
-                    if data_links[etaphi_links[(S1Board,eta,phi,0)][0]] != []:
-                        energies[eta][phi] += data_links[etaphi_links[(S1Board,eta,phi,0)][0]][0]
+            for phi in range(36):
+                if etaphi_links[(Sector,S1Board,eta,phi+offset,0)] != []:
+                    if data_links[etaphi_links[(Sector,S1Board,eta,phi+offset,0)][0]] != []:
+                        energies[eta][phi] += data_links[etaphi_links[(Sector,S1Board,eta,phi+offset,0)][0]][0]
+                else :
+                    energies[eta][phi] = 100000
+    for S1Board in range(14):
+        for eta in range(20):
+            for phi in range(36):
+                if etaphi_links[(Sector+1,S1Board,eta,phi-24+offset,0)] != []:
+                    if data_links[etaphi_links[(Sector+1,S1Board,eta,phi-nb_phi+offset,0)][0]] != []:
+                        energies[eta][phi] += data_links[etaphi_links[(Sector+1,S1Board,eta,phi-nb_phi+offset,0)][0]][0]
                 else :
                     energies[eta][phi] = 100000
     return energies
@@ -61,16 +93,18 @@ def get_pTT_numbers(pTT):
     phi = int(pTT,16) & 0x1F
     eta = (int(pTT,16) & 0x3E0) //(16 * 2)
     CEECEH = (int(pTT,16) & 0x400) //(16*16*4)
-    return(S1Board,eta,phi,CEECEH)
+    return(Sector,S1Board,eta,phi,CEECEH)
 
 def create_bins(args):
     Edges = args.Edges
     if Edges == 'yes': 
-        nb_phi = 28
+        nb_phi = 28 + 9
         phimin =-15 * np.pi/180
     else : 
-        nb_phi = 24
+        nb_phi = 24 + 6
         phimin =  0 * np.pi/180
+    nb_phi = 36
+    phimin =  0 * np.pi/180
     etamin = 1.305
     L = [[[]for phi in range(nb_phi)]for eta in range(20)]
     BinsXY =[[[]for phi in range(nb_phi)]for eta in range(20)] 
