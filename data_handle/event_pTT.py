@@ -64,15 +64,15 @@ class EventData():
 
     def getuvsector(self,layer,u,v):
         if self.Sector0(layer,u,v):
-            return(v-u,v,0):
+            return(v-u,v,0)
         else: 
             u,v = v-u,-u 
             if self.Sector0(layer,u,v):
-                return(v-u,v,1):
+                return(v-u,v,1)
             else : 
                 u,v = v-u,-u
                 if self.Sector0(layer,u,v):
-                    return(v-u,v,2):
+                    return(v-u,v,2)
                 
                 
 
