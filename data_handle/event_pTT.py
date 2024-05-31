@@ -134,7 +134,7 @@ class EventData():
 
     def _pTT_packer(self, args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup):
         self.provide_ts(args)
-        data_pTTs,data_pTTSdup = self._process_eventpTT(args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup)
+        data_pTTs = self._process_eventpTT(args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup)
         self.pTT_packer =  data_pTTs
 
 
