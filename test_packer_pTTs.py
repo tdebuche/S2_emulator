@@ -38,6 +38,7 @@ parser.add_argument('--Edges',   default = 'no', help='20*24 or 20*28 bins')
 args = parser.parse_args()
 
 S1pTTCEE,S1pTTCEH = read_txt_pTTs(args.Edges,args.Sector)
+S1pTTCEE,S1pTTCEH = read_txt_pTTs(args.Edges,args.Sector+1)
 xml_allocation = read_xml_pTTs(args.Edges)
 xml_plot = read_xml_plot(args.Edges)
 
