@@ -14,7 +14,7 @@ from matplotlib.colors import ListedColormap, LinearSegmentedColormap
 
 
 
-def read_xml_plot(Edges):
+def read_xml_plot(Edges,Sector):
     if Edges == 'yes':
         tree = ET.parse('config_files/pTTs/Sector'+str(Sector)+'/AllocationpTTsEdges.xml')
     if Edges == 'no':
@@ -34,6 +34,8 @@ def read_xml_plot(Edges):
                     n_link = 14 + 14*math.floor(channel/2) + S1_index
                     Sector,S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
                     data_pTT[(Sector,S1Board,eta,phi,CEECEH )].append((frame,n_link,channel%2))
+
+    
     if Edges == 'yes':
         tree = ET.parse('config_files/pTTs/Sector'+str(Sector)+'/DuplicationpTTsEdges.xml')
     if Edges == 'no':
