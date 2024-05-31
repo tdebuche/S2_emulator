@@ -41,7 +41,7 @@ S1pTTCEE,S1pTTCEH = read_build_pTTs(args.Edges,args.Sector)
 S1pTTCEEdup,S1pTTCEHdup = read_build_pTTs(args.Edges,args.Sector+1)
 xml_allocation = read_allocation_pTTs(args.Edges,args.Sector,4)
 xml_duplication = read_allocation_pTTs(args.Edges,args.Sector,2)
-xml_plot = read_xml_plot(args.Edges)
+xml_plot = read_xml_plot(args.Edges,args.Sector)
 
 events = provide_events(args.n, args.particles, args.pileup)
 for idx, event in enumerate(events):
