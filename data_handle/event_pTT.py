@@ -19,6 +19,7 @@ class EventData():
         self.ds_ts = None
         self.ds_stc = None
         self.ds_pTTs = None
+        self.ds_pTTsdup = None
         self.gen     = gen
         self.event   = gen.event
         self.eta_gen = gen.good_genpart_exeta[0]
@@ -62,11 +63,19 @@ class EventData():
         return False
 
     def getuvsector(self,layer,u,v):
-        if layer <34 and layer != 30 and layer != 32:
-            if v-u > 0 and v >= 0:
-                return(0,v-u,v)
-        if layer
-            
+        if self.Sector0(layer,u,v):
+            return(v-u,v,0):
+        else: 
+            u,v = v-u,-u 
+            if self.Sector0(layer,u,v):
+                return(v-u,v,1):
+            else : 
+                u,v = v-u,-u
+                if self.Sector0(layer,u,v):
+                    return(v-u,v,2):
+                
+                
+
 
     def provide_ts(self,args):
         TCs = self.ds_si
@@ -90,32 +99,41 @@ class EventData():
             
     def get_pTT_allocation(self, xml_allocation, pTT):
         return xml_allocation[pTT]
+    def get_pTT_duplication(self,xml_duplication,pTT):
+        return xml_duplication[pTT]
 
     def get_pTT_id(self, Sector, S1Board, CEECEH, eta,phi):
         S1Board = (int(S1Board[2])*16 + int(S1Board[3])) & 0x3F
         pTT_id = hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
-        #while len(pTT_id) <10:
-        #    pTT_id = '0x'+ str(0) +pTT_id[2:]
         return pTT_id
         
-    def _process_eventpTT(self,args, xml_allocation,S1pTTCEE,S1pTTCEH):
+    def _process_eventpTT(self,args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup):
         data_pTTs = defaultdict(list)
+        data_pTTsdup = defaultdict(list)
         Sector = args.Sector
         self.ds_pTTs = build_pTTsCEE(self.ds_ts, args, S1pTTCEE)
         pTTs = self.ds_pTTs
+        self.ds_pTTsdup = build_pTTsCEE(self.ds_ts, args, S1pTTCEEdup)
+        pTTsdup = ds_pTTsdup
         
         for pTT_idx in range(len(pTTs)):
             pTT = pTTs[pTT_idx]['pTT_id']
             pTT_xml = self.get_pTT_allocation(xml_allocation, pTT)
             if pTT_xml != [] :    #if pTT is allocated in the 4 links
                 data_pTTs[(pTT_xml[0]['frame'],pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTs[pTT_idx]['energy'])
+        for pTT_idx in range(len(pTTsdup)):
+            pTT = pTTsdup[pTT_idx]['pTT_id']
+            pTT_xml = self.get_pTT_duplication(xml_duplication, pTT)
+            if pTT_xml != [] :    #if pTT is allocated in the 2 links
+                data_pTTsdup[(pTT_xml[0]['frame'],pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTsdup[pTT_idx]['energy'])
 
-        return data_pTTs
+
+        return data_pTTs,data_pTTsdup
 
 
-    def _pTT_packer(self, args, xml_allocation,S1pTTCEE,S1pTTCEH):
+    def _pTT_packer(self, args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup):
         self.provide_ts(args)
-        data_pTTs = self._process_eventpTT(args, xml_allocation,S1pTTCEE,S1pTTCEH)
+        data_pTTs,data_pTTSdup = self._process_eventpTT(args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup)
         self.pTT_packer =  data_pTTs
 
 
@@ -141,7 +159,6 @@ def provide_event(ev, gen):
     si  = ev[ev['good_tc_subdet'] != 10]
     
     # selecting first 120 sector only
-    si  = si[(si['good_tc_waferv']-si['good_tc_waferu']>0) & (si['good_tc_waferv']>=0)]
     sci = sci[sci['good_tc_cellv']<=48]
 
     # sorting by modules  
