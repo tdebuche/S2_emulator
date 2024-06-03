@@ -60,6 +60,6 @@ for idx, event in enumerate(events):
   for ptt_idx in range(len(S1pTTCEE)):
     if S1pTTCEE[ptt_idx]['pTT'] == '0x58d0149':
       print(S1pTTCEE [ptt_idx])
-  print(en[(95,55,0)])
-  print(en[(5,55,1)])
+  print(event.pTT_packer[(95,55,0)])
+  print(event.pTT_packer[(5,55,1)])
   #record_plot(event.pTT_packer,xml_plot,args,'pTT_event'+str(idx))
