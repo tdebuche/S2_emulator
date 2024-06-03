@@ -62,4 +62,4 @@ for idx, event in enumerate(events):
       print(S1pTTCEE [ptt_idx])
   #print(event.pTT_packer[(95,55,0)])
   #print(event.pTT_packer[(5,55,1)])
-  record_plot(event.pTT_packer,xml_plot,args,'pTT_event'+str(idx))
+  record_plot(event,xml_plot,args,'pTT_event'+str(idx))
