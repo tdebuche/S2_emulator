@@ -50,7 +50,7 @@ for idx, event in enumerate(events):
   print(event.pTT_packer)
   #print(event.ds_ts)
   #print(xml_plot)
-  en = create_energies(event.pTT_packer,xml_plot,args)
+  #en = create_energies(event.pTT_packer,xml_plot,args)
   print(en)
   print(xml_allocation['0x58d0129'])
   print(xml_allocation['0x58d0149'])
@@ -60,6 +60,6 @@ for idx, event in enumerate(events):
   for ptt_idx in range(len(S1pTTCEE)):
     if S1pTTCEE[ptt_idx]['pTT'] == '0x58d0149':
       print(S1pTTCEE [ptt_idx])
-  print(event.pTT_packer[(95,55,0)])
-  print(event.pTT_packer[(5,55,1)])
+  #print(event.pTT_packer[(95,55,0)])
+  #print(event.pTT_packer[(5,55,1)])
   #record_plot(event.pTT_packer,xml_plot,args,'pTT_event'+str(idx))
