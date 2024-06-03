@@ -124,8 +124,8 @@ class EventData():
             pTT = pTTsdup[pTT_idx]['pTT_id']
             pTT_xml = self.get_pTT_duplication(xml_duplication, pTT)
             if pTT_xml != [] :    #if pTT is allocated in the 2 links
-                if data_pTTs[(pTT_xml[0]['frame'],69 + pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)] == []:
-                    data_pTTs[(pTT_xml[0]['frame'],69 + pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTsdup[pTT_idx]['energy'])
+                if data_pTTs[(pTT_xml[0]['frame'], pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)] == []:
+                    data_pTTs[(pTT_xml[0]['frame'], pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTsdup[pTT_idx]['energy'])
 
         return data_pTTs
 
