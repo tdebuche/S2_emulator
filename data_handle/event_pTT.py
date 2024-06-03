@@ -126,7 +126,7 @@ class EventData():
             if pTT_xml != [] :    #if pTT is allocated in the 2 links
                 if data_pTTs[(pTT_xml[0]['frame'],69 + pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)] != []:
                     data_pTTs[(pTT_xml[0]['frame'],69 + pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTsdup[pTT_idx]['energy'])
-                else : print('error in allocation of duplication')
+                else : print(data_pTTs[(pTT_xml[0]['frame'],69 + pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)])
 
 
         return data_pTTs
