@@ -159,8 +159,7 @@ def provide_event(ev, gen):
     
     # selecting first 120 sector only
     sci = sci[sci['good_tc_cellv']<=48]
-    si = si[si['good_tc_layer'] != 32]
-    si = si[si['good_tc_layer'] != 30]
+    si = si[si['good_tc_layer'] < 27]
 
     # sorting by modules  
     sorted_waferu = si[ak.argsort(si['good_tc_waferu'])]
