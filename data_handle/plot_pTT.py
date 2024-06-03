@@ -129,7 +129,11 @@ def etaphitoXY(eta,phi,z):
     return(x,y)
 
 
-def record_plot(data_links,etaphi_links,args,title):
+def record_plot(event,etaphi_links,args,title):
+    data_links = event.pTT_packer
+    eta_gen = str(event.eta_gen)
+    phi_gen = str(event.phi_gen)
+    pt_gen  = str(event.pT_gen)
     energies = create_energies(data_links,etaphi_links,args)
     BinXY = create_bins(args)
     plt.figure(figsize = (20,8))
@@ -161,5 +165,6 @@ def record_plot(data_links,etaphi_links,args,title):
             res +=1
             #if energies[eta][phi] != 100000:
                 #plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
+    plt.title('Gen particule : eta=' + eta_gen+' phi='+phi_gen+' pt=' + pt_gen)
     plt.savefig('plot_pTTs/'+title +'.png')
     
