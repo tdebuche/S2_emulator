@@ -77,16 +77,16 @@ def create_energies(data_links,etaphi_links,args):
                 if etaphi_links[(Sector,S1Board,eta,phi+offset,0)] != []:
                     if data_links[etaphi_links[(Sector,S1Board,eta,phi+offset,0)][0]] != []:
                         energies[eta][phi] += data_links[etaphi_links[(Sector,S1Board,eta,phi+offset,0)][0]][0]
-                else :
-                    energies[eta][phi] = 100000
+                    else :
+                        energies[eta][phi] = 100000
     for S1Board in range(14):
         for eta in range(20):
             for phi in range(36):
                 if etaphi_links[(Sector+1,S1Board,eta,phi-24+offset,0)] != []:
                     if data_links[etaphi_links[(Sector+1,S1Board,eta,phi-nb_phi+offset,0)][0]] != []:
                         energies[eta][phi] += data_links[etaphi_links[(Sector+1,S1Board,eta,phi-nb_phi+offset,0)][0]][0]
-                else :
-                    energies[eta][phi] = 100000
+                    else :
+                        energies[eta][phi] = 200000
     return energies
 
 
