@@ -132,7 +132,7 @@ def etaphitoXY(eta,phi,z):
 def record_plot(event,etaphi_links,args,title):
     data_links = event.pTT_packer
     eta_gen = str(event.eta_gen)
-    phi_gen = str(event.phi_gen)
+    phi_gen = str(event.phi_gen/np.pi * 180)
     pt_gen  = str(event.pT_gen)
     energies = create_energies(data_links,etaphi_links,args)
     BinXY = create_bins(args)
