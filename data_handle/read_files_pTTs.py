@@ -33,7 +33,7 @@ def read_allocation_pTTs(Edges,Sector,nb_links):
                     if nb_links == 2:
                         if channel//2 == 4:
                             n_link =  S1_index
-                        if channel//2 == 6:
+                        if channel//2 == 5:
                             n_link = 70 + S1_index
                     reversed_data_pTT[pTT].append({'frame'  : frame, 
                                                   'channel': channel, 
