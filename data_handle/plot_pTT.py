@@ -143,6 +143,8 @@ def record_plot(event,etaphi_links,args,title):
     pointXY = [[],[]]
     weights = []
     weightmax = 0
+    etamax = 0
+    phimax = 0
     for eta in range(len(BinXY)):
         for phi in range(len(BinXY[0])):
             X.append(BinXY[eta][phi][0][0])
@@ -151,6 +153,8 @@ def record_plot(event,etaphi_links,args,title):
                 weights.append(energies[eta][phi])
                 if  energies[eta][phi] > weightmax:
                     weightmax = energies[eta][phi]
+                    etamax = eta
+                    phimax = phi
             else : 
                 weights.append(0)
             pointXY[0].append(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4)
@@ -171,6 +175,17 @@ def record_plot(event,etaphi_links,args,title):
     eta_gen = str(round(event.eta_gen))
     phi_gen = str(round(event.phi_gen/np.pi * 180))
     pt_gen  = str(round(event.pT_gen))
-    plt.title('Gen particule : eta=' + eta_gen+' phi='+phi_gen+' pt=' + pt_gen)
+    energy_cluster = energycluster(energies,etamax,phimax)
+    plt.title('Gen particule : eta=' + eta_gen+' phi='+phi_gen+' pt=' + pt_gen +' pt_cluster ='+str(round(energy_cluster)))
     plt.savefig('plot_pTTs/'+title +'.png')
-    
+
+
+
+def energycluster(energies,etamax,phimax):
+    energy = 0
+    for i in range(-1,2):
+        for j in range(-1,2):
+            if (etamax+i)>= 0 and (etamax+i) < len(energies):
+                if (phimax+j)>=0 and (phimax+j)< len(energies[etamax+i]):
+                    energy += energies[etamax+i][phimax+j]
+    return energy
