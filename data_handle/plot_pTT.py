@@ -153,8 +153,6 @@ def record_plot(event,etaphi_links,args,title):
             pointXY[0].append(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4)
             pointXY[1].append(np.sum(np.array(BinXY[eta][phi][1][0:4]))/4)
     sc = plt.scatter(pointXY[0],pointXY[1],c=weights, vmin=0)
-    if (event.phi_gen < np.pi) and (event.phi_gen > 0):
-        plt.scatter(x,y,c = 'red', marker = 'x')
     plt.colorbar(sc)
     res = 0 
     colors = cm.get_cmap("viridis", 8)
@@ -165,9 +163,11 @@ def record_plot(event,etaphi_links,args,title):
             res +=1
             #if energies[eta][phi] != 100000:
                 #plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
-    eta_gen = str(event.eta_gen)
-    phi_gen = str(event.phi_gen/np.pi * 180)
-    pt_gen  = str(event.pT_gen)
+    if (event.phi_gen < np.pi) and (event.phi_gen > 0):
+        plt.scatter(x,y,c = 'red', marker = 'x')
+    eta_gen = str(round(event.eta_gen))
+    phi_gen = str(round(event.phi_gen/np.pi * 180))
+    pt_gen  = str(round(event.pT_gen))
     plt.title('Gen particule : eta=' + eta_gen+' phi='+phi_gen+' pt=' + pt_gen)
     plt.savefig('plot_pTTs/'+title +'.png')
     
