@@ -52,7 +52,10 @@ def read_xml_plot(Edges,Sector):
                 if all(attr in frame_element.attrib for attr in ['id','pTT']):
                     frame  = int(frame_element.get('id'))
                     pTT     = frame_element.get('pTT')
-                    n_link = 14 + 14*math.floor(channel/2) + S1_index
+                    if channel//2 == 0:
+                        n_link =  S1_index
+                    if channel//2 == 1:
+                        n_link = 70 + S1_index
                     Sector,S1Board,eta,phi,CEECEH = get_pTT_numbers(pTT)
                     data_pTT[(Sector,S1Board,eta,phi,CEECEH )].append((frame,n_link,channel%2))
                     
