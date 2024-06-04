@@ -33,7 +33,7 @@ parser.add_argument('--performance', action='store_true', help='Create performan
 parser.add_argument('--thr_seed',    action='store_true', help='Create efficiency plots post seeding')
 parser.add_argument('--cl_energy',   action='store_true', help='Create plot of gen_pt vs recontructed energy')
 parser.add_argument('--Sector',      type=int, default=0, help='Sector of S2 Board')
-parser.add_argument('--Edges',   default = 'no', help='20*24 or 20*28 bins')
+parser.add_argument('--Edges',   default = 'yes', help='20*24 or 20*28 bins')
 
 args = parser.parse_args()
 
