@@ -44,13 +44,4 @@ def word(pTTlinks,frame_idx,nb_link):
     return(hex(0x0000000000000000|(code_energy0) << 53 | (code_energy1)<< 45))
     
 
-    # with open('output.txt', 'a') as file:  
-    #   #metadata = [1101 if i == 0 else 11 if i == 107 else 1 for i in range(num_rows)],below only for the last line of the EMP file
-    #   metadata = 11 
-    # # Iterate over each row and write the data for each link
-    #   LinksInData_2d = [0] * 56       
-    #   row_str = ' '.join(str(metadata).zfill(4) + " " + str(f'{LinksInData_2d[j]:016x}' ) + " " for j in range(56))
-    #   # Write the last row to the file
-    #   frame = 108*nevents
-    #   file.write(f"Frame " + str(frame).zfill(4).rjust(4) + "    " + row_str + '\n')            
-    #   file.close()
+
