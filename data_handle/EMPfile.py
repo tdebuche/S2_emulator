@@ -6,6 +6,8 @@ import math
 import yaml
 import os
 
+from data_handle.tools import compress_value, printProgressBar
+
 def createEMPfile(event):
     pTTlinks = event.pTT_packer 
     
@@ -25,15 +27,17 @@ def createEMPfile(event):
                 metadata = 11
             
             frame = 'Frame '+ str(frame_idx).zfill(4).rjust(4) + "    " 
-            #frame += ' '.join(str(metadata).zfill(4) + " " + str(f'{word(pTTlinks,frame_idx,j):016x}' ) + " " for j in range(84))
-            frame += ' '.join(str(metadata).zfill(4) + " " + str(f'{0:016x}' ) + " " for j in range(84))
+            frame += ' '.join(str(metadata).zfill(4) + " " + str(f'{word(pTTlinks,frame_idx,j):016x}' ) + " " for j in range(84))
+            #frame += ' '.join(str(metadata).zfill(4) + " " + str(f'{0:016x}' ) + " " for j in range(84))
             file.write(f" {frame} \n")
         file.close()
 
 def word(pTTlinks,frame_idx,nb_link):
     energypTT0 = pTTlinks((frame_idx,nb_link,0))[0]
+    value_energy0, code_energy0 = compress_value(energypTT0*10000,5,3,0)
     energypTT1 = pTTlinks((frame_idx,nb_link,1))[0]
-    return(hex(0x0000000000000000|(energypTT0) << 53 | (energypTT0)<< 45))
+    value_energy1, code_energy1 = compress_value(energypTT1*10000,5,3,0)
+    return(hex(0x0000000000000000|(value_energy0) << 53 | (value_energy1)<< 45))
     
 
     # with open('output.txt', 'a') as file:  
