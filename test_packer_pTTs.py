@@ -19,7 +19,7 @@ from data_handle.read_files_pTTs import read_allocation_pTTs
 from data_handle.event_pTT import provide_events
 from data_handle.plot_pTT import create_energies
 from data_handle.plot_pTT import record_plot
-from data_handle.output_EMP import createEMPfile
+from data_handle.EMPfile import createEMPfile
 
 from data_handle.plot_pTT import read_xml_plot
 
