@@ -5,7 +5,7 @@ import uproot
 import math
 import yaml
 
-f = open(output_BeforeChange + '.txt', 'r')
+f = open('output_BeforeChange' + '.txt', 'r')
 EMP = f.readlines()
 f.close()
 
