@@ -52,5 +52,5 @@ for idx, event in enumerate(events):
   #print(event.ds_ts)
   #print(xml_plot)
   record_plot(event,xml_plot,args,'pTT_event'+str(idx))
-  createEMPfile(event)
+  #createEMPfile(event)
     
