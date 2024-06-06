@@ -21,9 +21,9 @@ def createEMPfile(event):
             if frame_idx == 0:
                 metadata = 1101 
             elif frame_idx != 107:
-                metadata = 0001
+                metadata = 1
             elif frame_idx == 107:
-                metadata = 0011
+                metadata = 11
             
             frame = 'Frame '+ str(frame_idx).zfill(4).rjust(4)
             #frame += ' '.join(str(metadata).zfill(4) + " " + str(f'{word(pTTlinks,frame_idx,j):016x}' ) + " " for j in range(84))
