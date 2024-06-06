@@ -16,7 +16,7 @@ def createEMPfile(event):
         num_columns=56
         file.write(f"ID: x1 \n")
         file.write(f"Metadata: (strobe,) start of orbit, start of packet, end of packet, valid \n \n")
-        column_str = '          '.join(str(j).zfill(3).rjust(15) for j in range(num_columns))
+        column_str = '          '.join(str(j).zfill(3).rjust(13.5) for j in range(num_columns))
         file.write(f"      Link {column_str}\n")
         for frame_idx in range(108):
             if frame_idx == 0:
