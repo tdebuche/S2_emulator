@@ -19,6 +19,7 @@ from data_handle.read_files_pTTs import read_allocation_pTTs
 from data_handle.event_pTT import provide_events
 from data_handle.plot_pTT import create_energies
 from data_handle.plot_pTT import record_plot
+from data_handle.output_EMP import createEMPfile
 
 from data_handle.plot_pTT import read_xml_plot
 
@@ -50,16 +51,6 @@ for idx, event in enumerate(events):
   print(event.pTT_packer)
   #print(event.ds_ts)
   #print(xml_plot)
-  en = create_energies(event.pTT_packer,xml_plot,args)
-  print(en)
-  print(xml_allocation['0x58d0129'])
-  print(xml_allocation['0x58d0149'])
-  for ptt_idx in range(len(S1pTTCEE)):
-    if S1pTTCEE[ptt_idx]['pTT'] == '0x58d0129':
-      print(S1pTTCEE [ptt_idx])
-  for ptt_idx in range(len(S1pTTCEE)):
-    if S1pTTCEE[ptt_idx]['pTT'] == '0x58d0149':
-      print(S1pTTCEE [ptt_idx])
-  #print(event.pTT_packer[(95,55,0)])
-  #print(event.pTT_packer[(5,55,1)])
-  record_plot(event,xml_plot,args,'pTT_event'+str(idx))
+  #record_plot(event,xml_plot,args,'pTT_event'+str(idx))
+  createEMPfile(event)
+    
