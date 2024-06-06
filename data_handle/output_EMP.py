@@ -5,12 +5,11 @@ import uproot
 import math
 import yaml
 import os
-os.chdir('./EMPfiles')
 
 def createEMPfile(event):
     pTTlinks = event.pTT_packer 
     
-    with open('EMPtest.txt', 'a') as file:   
+    with open('./EMPfiles/EMPtest.txt', 'a') as file:   
       #write the first comments for the EMP file
         num_columns=56
         file.write(f"ID: x1 \n")
