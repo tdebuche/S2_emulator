@@ -33,9 +33,9 @@ def createEMPfile(event):
         file.close()
 
 def word(pTTlinks,frame_idx,nb_link):
-    energypTT0 = pTTlinks((frame_idx,nb_link,0))[0]
+    energypTT0 = pTTlinks[(frame_idx,nb_link,0)][0]
     value_energy0, code_energy0 = compress_value(energypTT0*10000,5,3,0)
-    energypTT1 = pTTlinks((frame_idx,nb_link,1))[0]
+    energypTT1 = pTTlinks[(frame_idx,nb_link,1)][0]
     value_energy1, code_energy1 = compress_value(energypTT1*10000,5,3,0)
     return(hex(0x0000000000000000|(value_energy0) << 53 | (value_energy1)<< 45))
     
