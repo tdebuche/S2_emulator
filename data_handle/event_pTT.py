@@ -66,6 +66,8 @@ class EventData():
         return False
 
     def getuvsector(self,layer,u,v):
+        if u == -999:
+            return (u,v,0)
         if self.Sector0(layer,u,v):
             if (layer != 28) and (layer != 30) and (layer != 32): 
                 return(v-u,v,0)
