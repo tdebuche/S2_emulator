@@ -20,7 +20,7 @@ from data_handle.event_pTT import provide_events
 from data_handle.plot_pTT import create_energies
 from data_handle.plot_pTT import record_plot
 from data_handle.EMPfile import createEMPfile
-import data_handle.geometry as geometry
+#import data_handle.geometry as geometry
 from data_handle.plot_pTT import read_xml_plot
 
 parser = argparse.ArgumentParser(description='Stage-2 Emulator Parameters')
