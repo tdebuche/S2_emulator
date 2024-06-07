@@ -116,7 +116,7 @@ class EventData():
                                         self.ds_si.good_tc_layer[module_idx][0],
                                         u,
                                         v)
-            if self.ds_si.good_tc_layer[module_idx][0] < 27:
+            if self.ds_si.good_tc_layer[module_idx][0] < 48:
                 if ts[module] == []:
                     ts[module].append(0)
                 ts[module][0] += self.ds_si.good_tc_pt[module_idx][0]
@@ -137,10 +137,27 @@ class EventData():
     def _process_eventpTT(self,args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup):
         data_pTTs = defaultdict(list)
         Sector = args.Sector
-        self.ds_pTTs = build_pTTsCEE(self.ds_ts, args, S1pTTCEE)
-        pTTs = self.ds_pTTs
-        self.ds_pTTsdup = build_pTTsCEE(self.ds_ts, args, S1pTTCEEdup)
-        pTTsdup = self.ds_pTTsdup
+        self.ds_pTTsCEE = build_pTTsCEE(self.ds_ts, args, S1pTTCEE)
+        pTTs = self.ds_pTTsCEE
+        self.ds_pTTsdupCEE = build_pTTsCEE(self.ds_ts, args, S1pTTCEEdup)
+        pTTsdup = self.ds_pTTsdupCEE
+        
+        for pTT_idx in range(len(pTTs)):
+            pTT = pTTs[pTT_idx]['pTT_id']
+            pTT_xml = self.get_pTT_allocation(xml_allocation, pTT)
+            if pTT_xml != [] :    #if pTT is allocated in the 4 links
+                data_pTTs[(pTT_xml[0]['frame'],pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTs[pTT_idx]['energy'])
+        for pTT_idx in range(len(pTTsdup)):
+            pTT = pTTsdup[pTT_idx]['pTT_id']
+            pTT_xml = self.get_pTT_duplication(xml_duplication, pTT)
+            if pTT_xml != [] :    #if pTT is allocated in the 2 links
+                if data_pTTs[(pTT_xml[0]['frame'], pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)] == []:
+                    data_pTTs[(pTT_xml[0]['frame'], pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTsdup[pTT_idx]['energy'])
+
+        self.ds_pTTsCEH = build_pTTsCEE(self.ds_ts, args, S1pTTCEH)
+        pTTs = self.ds_pTTsCEE
+        self.ds_pTTsdupCEH = build_pTTsCEE(self.ds_ts, args, S1pTTCEHdup)
+        pTTsdup = self.ds_pTTsdupCEH
         
         for pTT_idx in range(len(pTTs)):
             pTT = pTTs[pTT_idx]['pTT_id']
