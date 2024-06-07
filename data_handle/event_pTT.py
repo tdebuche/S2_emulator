@@ -51,7 +51,7 @@ class EventData():
 
 
     def Sector0(self,layer,u,v):
-        if (layer <34) and (layer != 30) and (layer != 32):
+        if (layer <34) and (layer != 30) and (layer != 32) and (layer != 28):
             if (v-u > 0) and (v >= 0):
                 return(True)
         if (layer >= 34) and (layer%2 == 0):
@@ -60,19 +60,42 @@ class EventData():
         if (layer >= 34) and (layer%2 == 1):
             if (v-u >= 0) and (v >= 0):
                 return(True)
+        if (layer == 28) or (layer == 30) or (layer == 32):
+            if (u - 2*v <0) and (u+v >= 0):
+                return(True)
         return False
 
     def getuvsector(self,layer,u,v):
         if self.Sector0(layer,u,v):
-            return(v-u,v,0)
+            if (layer != 28) and (layer != 30) and (layer != 32): 
+                return(v-u,v,0)
+            else :
+                if u >= 0:
+                    return (v,u,1)
+                else :
+                    return(,,1)
         else: 
             u,v = v-u,-u 
             if self.Sector0(layer,u,v):
-                return(v-u,v,1)
+                if (layer != 28) and (layer != 30) and (layer != 32): 
+                    return(v-u,v,1)
+                else:
+                    if u >= 0:
+                        return (v,u,1)
+                    else :
+                        return(-u,v-u,1)
+                    
             else : 
                 u,v = v-u,-u
                 if self.Sector0(layer,u,v):
-                    return(v-u,v,2)
+                    if (layer != 28) and (layer != 30) and (layer != 32): 
+                        return(v-u,v,2)
+                    else :
+                        if u >= 0:
+                            return (v,u,1)
+                        else :
+                            return(-u,v-u,1)
+                        
                 
                 
 
