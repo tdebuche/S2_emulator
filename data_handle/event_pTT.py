@@ -18,8 +18,10 @@ class EventData():
         self.ds_sci  = ds_sci
         self.ds_ts = None
         self.ds_stc = None
-        self.ds_pTTs = None
-        self.ds_pTTsdup = None
+        self.ds_pTTsCEE = None
+        self.ds_pTTsdupCEE = None
+        self.ds_pTTsCEH = None
+        self.ds_pTTsdupCEH = None
         self.gen     = gen
         self.event   = gen.event
         self.eta_gen = gen.good_genpart_exeta[0]
@@ -184,7 +186,7 @@ def provide_event(ev, gen):
     
     # selecting first 120 sector only
     sci = sci[sci['good_tc_cellv']<=48]
-    si = si[si['good_tc_layer'] < 27]
+    #si = si[si['good_tc_layer'] < 27]
 
     # sorting by modules  
     sorted_waferu = si[ak.argsort(si['good_tc_waferu'])]
