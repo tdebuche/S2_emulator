@@ -73,7 +73,7 @@ class EventData():
                 if u >= 0:
                     return (v,u,1)
                 else :
-                    return(,,1)
+                    return(-u,v-u,1)
         else: 
             u,v = v-u,-u 
             if self.Sector0(layer,u,v):
