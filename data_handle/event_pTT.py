@@ -134,7 +134,7 @@ class EventData():
         pTT_id = hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
         return pTT_id
         
-    def _process_eventpTT(self,args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup):
+    def _process_eventpTT(self,args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup):
         data_pTTs = defaultdict(list)
         Sector = args.Sector
         self.ds_pTTsCEE = build_pTTsCEE(self.ds_ts, args, S1pTTCEE)
@@ -155,7 +155,7 @@ class EventData():
                     data_pTTs[(pTT_xml[0]['frame'], pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTsdup[pTT_idx]['energy'])
 
         self.ds_pTTsCEH = build_pTTsCEE(self.ds_ts, args, S1pTTCEH)
-        pTTs = self.ds_pTTsCEE
+        pTTs = self.ds_pTTsCEH
         self.ds_pTTsdupCEH = build_pTTsCEE(self.ds_ts, args, S1pTTCEHdup)
         pTTsdup = self.ds_pTTsdupCEH
         
@@ -174,9 +174,9 @@ class EventData():
         return data_pTTs
 
 
-    def _pTT_packer(self, args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup):
+    def _pTT_packer(self, args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup):
         self.provide_ts(args)
-        data_pTTs = self._process_eventpTT(args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup)
+        data_pTTs = self._process_eventpTT(args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup)
         self.pTT_packer =  data_pTTs
 
 
