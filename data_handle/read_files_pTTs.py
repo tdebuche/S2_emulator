@@ -113,14 +113,14 @@ def read_build_pTTs(Edges,Sector):
         fCEE = open('config_files/pTTs/Sector'+str(Sector)+'/CE_E_allBoards_Edges.txt', 'r')
         data_CEE = fCEE.readlines()
         fCEE.close()
-        fCEH = open('config_files/pTTs/Sector'+str(Sector)+'/CE_H_allBoards_Edges.txt', 'r')
+        fCEH = open('config_files/pTTs/Sector'+str(Sector)+'/CE_H_allBoards_EdgesNoSTCs.txt', 'r')
         data_CEH = fCEH.readlines()
         fCEH.close()
     if Edges == 'no':
         fCEE = open('config_files/pTTs/Sector'+str(Sector)+'/CE_E_allBoards_NoEdges.txt', 'r')
         data_CEE = fCEE.readlines()
         fCEE.close()
-        fCEH = open('config_files/pTTs/Sector'+str(Sector)+'/CE_H_allBoards_NoEdges.txt', 'r')
+        fCEH = open('config_files/pTTs/Sector'+str(Sector)+'/CE_H_allBoards_NoEdgesNoSTCs.txt', 'r')
         data_CEH = fCEH.readlines()
         fCEH.close()
     pTTs_CEE = []
