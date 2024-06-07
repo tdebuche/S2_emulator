@@ -85,7 +85,7 @@ def Sector0(layer,u,v):
                 return(True)
         return False
 
-    def getuvsector(layer,u,v):
+def getuvsector(layer,u,v):
         if Sector0(layer,u,v):
             if (layer != 28) and (layer != 30) and (layer != 32): 
                 return(v-u,v,0)
