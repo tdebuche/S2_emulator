@@ -74,22 +74,38 @@ def create_energies(data_links,etaphi_links,args):
         offset = 0
         
     Sector = args.Sector
-    energies = [[0 for phi in range(36)]for eta in range(20)]
+    energiesCEE = [[0 for phi in range(36)]for eta in range(20)]
     for S1Board in range(14):
         for eta in range(20):
             for phi in range(36):
                 if etaphi_links[(Sector,S1Board,eta,phi+offset,0)] != []:
                     if data_links[etaphi_links[(Sector,S1Board,eta,phi+offset,0)][0]] != []:
-                        energies[eta][phi] += data_links[etaphi_links[(Sector,S1Board,eta,phi+offset,0)][0]][0]
+                        energiesCEE[eta][phi] += data_links[etaphi_links[(Sector,S1Board,eta,phi+offset,0)][0]][0]
                         #energies[eta][phi] += 1
     for S1Board in range(14):
         for eta in range(20):
             for phi in range(36):
                 if etaphi_links[(Sector+1,S1Board,eta,phi-24+offset,0)] != []:
                     if data_links[etaphi_links[(Sector+1,S1Board,eta,phi-24+offset,0)][0]] != []:
-                        energies[eta][phi] += data_links[etaphi_links[(Sector+1,S1Board,eta,phi-24+offset,0)][0]][0]
+                        energiesCEE[eta][phi] += data_links[etaphi_links[(Sector+1,S1Board,eta,phi-24+offset,0)][0]][0]
                         #energies[eta][phi] += 1
-    return energies
+    
+    energiesCEH = [[0 for phi in range(36)]for eta in range(20)]
+    for S1Board in range(14):
+        for eta in range(20):
+            for phi in range(36):
+                if etaphi_links[(Sector,S1Board,eta,phi+offset,1)] != []:
+                    if data_links[etaphi_links[(Sector,S1Board,eta,phi+offset,1)][0]] != []:
+                        energiesCEH[eta][phi] += data_links[etaphi_links[(Sector,S1Board,eta,phi+offset,1)][0]][0]
+                        #energies[eta][phi] += 1
+    for S1Board in range(14):
+        for eta in range(20):
+            for phi in range(36):
+                if etaphi_links[(Sector+1,S1Board,eta,phi-24+offset,1)] != []:
+                    if data_links[etaphi_links[(Sector+1,S1Board,eta,phi-24+offset,1)][0]] != []:
+                        energiesCEH[eta][phi] += data_links[etaphi_links[(Sector+1,S1Board,eta,phi-24+offset,1)][0]][0]
+                        #energies[eta][phi] += 1
+    return(energiesCEE,energiesCEH)
 
 
 def get_pTT_numbers(pTT):
@@ -134,9 +150,13 @@ def etaphitoXY(eta,phi,z):
 
 def record_plot(event,etaphi_links,args,title):
     data_links = event.pTT_packer
-    x,y = etaphitoXY(event.eta_gen,event.phi_gen,1)
-    energies = create_energies(data_links,etaphi_links,args)
+    energiesCEE,energiesCEH = create_energies(data_links,etaphi_links,args)
     BinXY = create_bins(args)
+    createplot(event,energiesCEE,BinXY,title+'CEE')
+    createplot(event,energiesCEH,BinXY,title+'CEH')
+
+def createplot(event,energies,BinXY,title)
+    x,y = etaphitoXY(event.eta_gen,event.phi_gen,1)
     plt.figure(figsize = (20,8))
     X =[]
     Y = []
@@ -150,7 +170,7 @@ def record_plot(event,etaphi_links,args,title):
             X.append(BinXY[eta][phi][0][0])
             Y.append(BinXY[eta][phi][1][0])
             if energies[eta][phi] != 100000:
-                weights.append(energies[eta][phi])
+                weights.append(energiesCEE[eta][phi])
                 if  energies[eta][phi] > weightmax:
                     weightmax = energies[eta][phi]
                     etamax = eta
