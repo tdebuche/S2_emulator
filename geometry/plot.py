@@ -64,9 +64,55 @@ def plot_uv(event):
                 u,v = TCs['good_tc_waferu'][TC_idx],TCs['good_tc_waferv'][TC_idx]
                 #if TCs[TC_idx]['good_tc_waferu'] :
                 if not (u,v) in L:
-                    plt.annotate('('+str(u)+','+str(v)+')',(TCs['good_tc_x'][TC_idx]*10,TCs['good_tc_y'][TC_idx]*10))
                     L.append((u,v))
+                    u,v,sector = getuvsector(layer,u,v)
+                    plt.annotate('('+str(u)+','+str(v)+')',(TCs['good_tc_x'][TC_idx]*10,TCs['good_tc_y'][TC_idx]*10))
                     plt.scatter(TCs['good_tc_x'][TC_idx]*10,TCs['good_tc_y'][TC_idx]*10)
             plt.savefig('geometry/plot_geometry/'+ 'Layer' +str(layer)+'.png')
-  
+
+def Sector0(layer,u,v):
+        if (layer <34) and (layer != 30) and (layer != 32) and (layer != 28):
+            if (v-u > 0) and (v >= 0):
+                return(True)
+        if (layer >= 34) and (layer%2 == 0):
+            if (v-u > 0) and (v > 0):
+                return(True)
+        if (layer >= 34) and (layer%2 == 1):
+            if (v-u >= 0) and (v >= 0):
+                return(True)
+        if (layer == 28) or (layer == 30) or (layer == 32):
+            if (u - 2*v <0) and (u+v >= 0):
+                return(True)
+        return False
+
+    def getuvsector(layer,u,v):
+        if Sector0(layer,u,v):
+            if (layer != 28) and (layer != 30) and (layer != 32): 
+                return(v-u,v,0)
+            else :
+                if u >= 0:
+                    return (v,u,1)
+                else :
+                    return(,,1)
+        else: 
+            u,v = v-u,-u 
+            if Sector0(layer,u,v):
+                if (layer != 28) and (layer != 30) and (layer != 32): 
+                    return(v-u,v,1)
+                else:
+                    if u >= 0:
+                        return (v,u,1)
+                    else :
+                        return(-u,v-u,1)
+                    
+            else : 
+                u,v = v-u,-u
+                if Sector0(layer,u,v):
+                    if (layer != 28) and (layer != 30) and (layer != 32): 
+                        return(v-u,v,2)
+                    else :
+                        if u >= 0:
+                            return (v,u,1)
+                        else :
+                            return(-u,v-u,1)
 
