@@ -93,7 +93,7 @@ def getuvsector(layer,u,v):
                 if u >= 0:
                     return (v,u,1)
                 else :
-                    return(,,1)
+                    return(-u,v-u,1)
         else: 
             u,v = v-u,-u 
             if Sector0(layer,u,v):
