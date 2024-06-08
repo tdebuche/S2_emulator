@@ -109,9 +109,10 @@ class EventData():
         ts = defaultdict(list)
         Sector = args.Sector
         for module_idx in range(len(self.ds_si.good_tc_layer)):
-            u,v,sector = self.getuvsector(self.ds_si.good_tc_layer[module_idx][0],
-                                        self.ds_si.good_tc_waferu[module_idx][0],
-                                        self.ds_si.good_tc_waferv[module_idx][0])
+            if self.ds_si.good_tc_waferu[module_idx][0] != -999:
+                u,v,sector = self.getuvsector(self.ds_si.good_tc_layer[module_idx][0],
+                                            self.ds_si.good_tc_waferu[module_idx][0],
+                                            self.ds_si.good_tc_waferv[module_idx][0])
             if u != -999:
                 module = self.get_module_id(sector,
                                             self.ds_si.good_tc_layer[module_idx][0],
