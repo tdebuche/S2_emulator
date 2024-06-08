@@ -155,7 +155,7 @@ def record_plot(event,etaphi_links,args,title):
     createplot(event,energiesCEE,BinXY,title+'CEE')
     createplot(event,energiesCEH,BinXY,title+'CEH')
 
-def createplot(event,energies,BinXY,title)
+def createplot(event,energies,BinXY,title):
     x,y = etaphitoXY(event.eta_gen,event.phi_gen,1)
     plt.figure(figsize = (20,8))
     X =[]
