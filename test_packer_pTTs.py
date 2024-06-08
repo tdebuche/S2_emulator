@@ -49,6 +49,7 @@ print('ok files')
 events = provide_events(args.n, args.particles, args.pileup)
 print('ok event')
 for idx, event in enumerate(events):
+  print(str(idx))
   #event._data_packer(args, xml_data, xml_MB)
   #print(event.data_packer)
   event._pTT_packer(args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup)
