@@ -119,6 +119,9 @@ class EventData():
         ts = defaultdict(list)
         Sector = args.Sector
         for module_idx in range(len(self.ds_si.good_tc_layer)):
+            layer,u,v = self.ds_si.good_tc_layer[module_idx][0],self.ds_si.good_tc_waferu[module_idx][0],self.ds_si.good_tc_waferv[module_idx][0]
+            if not( type(u) == int and type(v) == int and type(layer) == int):
+                print(layer,u,v)
             if not self.getuvsector(self.ds_si.good_tc_layer[module_idx][0],self.ds_si.good_tc_waferu[module_idx][0],self.ds_si.good_tc_waferv[module_idx][0]):
                 print(self.ds_si.good_tc_layer[module_idx][0],
                                             self.ds_si.good_tc_waferu[module_idx][0],
