@@ -152,10 +152,10 @@ def record_plot(event,etaphi_links,args,title):
     data_links = event.pTT_packer
     energiesCEE,energiesCEH = create_energies(data_links,etaphi_links,args)
     BinXY = create_bins(args)
-    createplot(event,energiesCEE,BinXY,title+'CEE')
-    createplot(event,energiesCEH,BinXY,title+'CEH')
+    createplot(args,event,energiesCEE,BinXY,title+'CEE')
+    createplot(args,event,energiesCEH,BinXY,title+'CEH')
 
-def createplot(event,energies,BinXY,title):
+def createplot(args,event,energies,BinXY,title):
     x,y = etaphitoXY(event.eta_gen,event.phi_gen,1)
     plt.figure(figsize = (20,8))
     X =[]
@@ -196,7 +196,7 @@ def createplot(event,energies,BinXY,title):
     phi_gen = str(round(event.phi_gen/np.pi * 180))
     pt_gen  = str(round(event.pT_gen))
     energy_cluster = energycluster(energies,etamax,phimax)
-    plt.title('Gen particule : eta=' + eta_gen+' phi='+phi_gen+' pt=' + pt_gen +' pt_cluster ='+str(round(energy_cluster)))
+    plt.title('Gen particule : '+args.particles+',eta=' + eta_gen+',phi='+phi_gen+',pt=' + pt_gen +',pt_cluster ='+str(round(energy_cluster)))
     plt.savefig('plot_pTTs/'+title +'.png')
 
 
