@@ -52,7 +52,7 @@ class EventData():
         return MB[int(plane)][int(v)]
 
 
-    def Sector0(layer,u,v):
+    def Sector0(self,layer,u,v):
         if (layer <34) and (layer != 30) and (layer != 32) and (layer != 28):
             if (v-u > 0) and (v >= 0):
                 return(True)
@@ -67,10 +67,10 @@ class EventData():
                 return(True)
         return False
 
-    def getuvsector(layer,u,v):
+    def getuvsector(self,layer,u,v):
         if u == -999:
             return (u,v,0)
-        if Sector0(layer,u,v):
+        if self.Sector0(layer,u,v):
             if (layer != 28) and (layer != 30) and (layer != 32): 
                 return(v-u,v,0)
             else :
@@ -85,7 +85,7 @@ class EventData():
                 u,v = -v+1,u-v+1
             if (layer >= 34) and (layer%2 == 1):
                 u,v = -v-1,u-v-1
-            if Sector0(layer,u,v):
+            if self.Sector0(layer,u,v):
                 if (layer != 28) and (layer != 30) and (layer != 32): 
                     return(v-u,v,1)
                 else:
@@ -101,7 +101,7 @@ class EventData():
                     u,v = -v+1,u-v+1
                 if (layer >= 34) and (layer%2 == 1):
                     u,v = -v-1,u-v-1
-                if Sector0(layer,u,v):
+                if self.Sector0(layer,u,v):
                     if (layer != 28) and (layer != 30) and (layer != 32): 
                         return(v-u,v,2)
                     else :
@@ -119,11 +119,8 @@ class EventData():
         ts = defaultdict(list)
         Sector = args.Sector
         for module_idx in range(len(self.ds_si.good_tc_layer)):
-            layer,u,v = self.ds_si.good_tc_layer[module_idx][0],self.ds_si.good_tc_waferu[module_idx][0],self.ds_si.good_tc_waferv[module_idx][0]
-            if not( type(u) == int and type(v) == int and type(layer) == int):
-                print(layer,u,v)
-            #if not self.getuvsector(self.ds_si.good_tc_layer[module_idx][0],self.ds_si.good_tc_waferu[module_idx][0],self.ds_si.good_tc_waferv[module_idx][0]):
-                #print(self.ds_si.good_tc_layer[module_idx][0],self.ds_si.good_tc_waferu[module_idx][0],self.ds_si.good_tc_waferv[module_idx][0])
+            if not self.getuvsector(self.ds_si.good_tc_layer[module_idx][0],self.ds_si.good_tc_waferu[module_idx][0],self.ds_si.good_tc_waferv[module_idx][0]):
+                print(self.ds_si.good_tc_layer[module_idx][0],self.ds_si.good_tc_waferu[module_idx][0],self.ds_si.good_tc_waferv[module_idx][0])
             else :
                 u,v,sector = self.getuvsector(self.ds_si.good_tc_layer[module_idx][0],
                                             self.ds_si.good_tc_waferu[module_idx][0],
