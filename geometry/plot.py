@@ -89,15 +89,20 @@ def getuvsector(layer,u,v):
         if u == -999:
             return (u,v,0)
         if Sector0(layer,u,v):
-            if (layer != 28) and (layer != 30) and (layer != 32): 
+            if (layer != 28) and (layer != 30) and (layer != 32) and (layer <34): 
                 return(v-u,v,0)
             else :
                 if u >= 0:
                     return (v,u,1)
                 else :
                     return(-u,v-u,1)
-        else: 
-            u,v = v-u,-u 
+        else:
+            if  (layer <34):
+                u,v = -v,v-u
+            if (layer >= 34) and (layer%2 == 0):
+                u,v = -v+1,u-v+1
+            if (layer >= 34) and (layer%2 == 1):
+                u,v = -v-1,u-v-1
             if Sector0(layer,u,v):
                 if (layer != 28) and (layer != 30) and (layer != 32): 
                     return(v-u,v,1)
@@ -108,7 +113,12 @@ def getuvsector(layer,u,v):
                         return(-u,v-u,1)
                     
             else : 
-                u,v = v-u,-u
+                if  (layer <34):
+                    u,v = -v,v-u
+                if (layer >= 34) and (layer%2 == 0):
+                    u,v = -v+1,u-v+1
+                if (layer >= 34) and (layer%2 == 1):
+                    u,v = -v-1,u-v-1
                 if Sector0(layer,u,v):
                     if (layer != 28) and (layer != 30) and (layer != 32): 
                         return(v-u,v,2)
