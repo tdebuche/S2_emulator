@@ -73,7 +73,7 @@ class EventData():
             u,v,sector = getuvsector(self.ds_si.good_tc_layer[module_idx][0],
                                         self.ds_si.good_tc_waferu[module_idx][0],
                                         self.ds_si.good_tc_waferv[module_idx][0])
-                module = self.get_module_id(3,self.ds_si.good_tc_layer[module_idx][0],u,v)
+            module = self.get_module_id(3,self.ds_si.good_tc_layer[module_idx][0],u,v)
 
         TCs = self.ds_si
         ts = defaultdict(list)
