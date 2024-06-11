@@ -9,7 +9,7 @@ import cppyy
 from cppyy.gbl import l1thgcfirmware, std
 
 import data_handle.plot_tools as plot
-from data_handle.tools import compress_value, printProgressBar
+from data_handle.tools import compress_value, printProgressBar, getuvsector
 
 
 class EventData():
@@ -50,68 +50,21 @@ class EventData():
     
     def get_MB_id(self, plane, v, MB):
         return MB[int(plane)][int(v)]
-
-
-    def Sector0(self,layer,u,v):
-        if (layer <34) and (layer != 30) and (layer != 32) and (layer != 28):
-            if (v-u > 0) and (v >= 0):
-                return(True)
-        if (layer >= 34) and (layer%2 == 0):
-            if (v-u > 0) and (v > 0):
-                return(True)
-        if (layer >= 34) and (layer%2 == 1):
-            if (v-u >= 0) and (v >= 0):
-                return(True)
-        if (layer == 28) or (layer == 30) or (layer == 32):
-            if (u - 2*v <0) and (u+v >= 0):
-                return(True)
-        return False
-
-    def getuvsector(self,layer,u,v):
-        if u == -999:
-            return (u,v,0)
-        if self.Sector0(layer,u,v):
-            if (layer != 28) and (layer != 30) and (layer != 32): 
-                return(v-u,v,0)
-            else :
-                if u >= 0:
-                    return (v,u,1)
-                else :
-                    return(-u,v-u,1)
-        else:
-            if  (layer <34):
-                u,v = -v,u-v
-            if (layer >= 34) and (layer%2 == 0):
-                u,v = -v+1,u-v+1
-            if (layer >= 34) and (layer%2 == 1):
-                u,v = -v-1,u-v-1
-            if self.Sector0(layer,u,v):
-                if (layer != 28) and (layer != 30) and (layer != 32): 
-                    return(v-u,v,1)
-                else:
-                    if u >= 0:
-                        return (v,u,1)
-                    else :
-                        return(-u,v-u,1)
-                    
-            else : 
-                if  (layer <34):
-                    u,v = -v,u-v
-                if (layer >= 34) and (layer%2 == 0):
-                    u,v = -v+1,u-v+1
-                if (layer >= 34) and (layer%2 == 1):
-                    u,v = -v-1,u-v-1
-                if self.Sector0(layer,u,v):
-                    if (layer != 28) and (layer != 30) and (layer != 32): 
-                        return(v-u,v,2)
-                    else :
-                        if u >= 0:
-                            return (v,u,1)
-                        else :
-                            return(-u,v-u,1)
-                        
                 
-                
+            
+    def get_pTT_allocation(self, xml_allocation, pTT):
+        return xml_allocation[pTT]
+        
+    def get_pTT_duplication(self,xml_duplication,pTT):
+        return xml_duplication[pTT]
+        
+    def get_TC_allocation(self, xml_data, module):
+        return xml_data[module]
+
+    def get_pTT_id(self, Sector, S1Board, CEECEH, eta,phi):
+        S1Board = (int(S1Board[2])*16 + int(S1Board[3])) & 0x3F
+        pTT_id = hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
+        return pTT_id
 
 
     def provide_ts(self,args):
@@ -119,10 +72,10 @@ class EventData():
         ts = defaultdict(list)
         Sector = args.Sector
         for module_idx in range(len(self.ds_si.good_tc_layer)):
-            if not self.getuvsector(self.ds_si.good_tc_layer[module_idx][0],self.ds_si.good_tc_waferu[module_idx][0],self.ds_si.good_tc_waferv[module_idx][0]):
+            if not getuvsector(self.ds_si.good_tc_layer[module_idx][0],self.ds_si.good_tc_waferu[module_idx][0],self.ds_si.good_tc_waferv[module_idx][0]):
                 print(self.ds_si.good_tc_layer[module_idx][0],self.ds_si.good_tc_waferu[module_idx][0],self.ds_si.good_tc_waferv[module_idx][0])
             else :
-                u,v,sector = self.getuvsector(self.ds_si.good_tc_layer[module_idx][0],
+                u,v,sector = getuvsector(self.ds_si.good_tc_layer[module_idx][0],
                                             self.ds_si.good_tc_waferu[module_idx][0],
                                             self.ds_si.good_tc_waferv[module_idx][0])
                 if u != -999:
@@ -135,21 +88,8 @@ class EventData():
                             ts[module].append(0)
                         ts[module][0] += self.ds_si.good_tc_pt[module_idx][0]
         self.ds_ts = ts
-            
-                
-            
-    def get_pTT_allocation(self, xml_allocation, pTT):
-        return xml_allocation[pTT]
-    def get_pTT_duplication(self,xml_duplication,pTT):
-        return xml_duplication[pTT]
-    def get_TC_allocation(self, xml_data, module):
-        return xml_data[module]
-
-    def get_pTT_id(self, Sector, S1Board, CEECEH, eta,phi):
-        S1Board = (int(S1Board[2])*16 + int(S1Board[3])) & 0x3F
-        pTT_id = hex(0x00000000 | ((Sector & 0x3) << 29) | ((1 & 0x3) << 26)  | ((6 & 0xF) << 22) | ((S1Board & 0x3F) << 16) | ((CEECEH & 0x1) << 10) | ((eta & 0x1F) << 5) | ((phi & 0x1F) << 0))
-        return pTT_id
         
+            
     def _process_eventpTT(self,args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup):
         data_pTTs = defaultdict(list)
         Sector = args.Sector
@@ -221,9 +161,6 @@ class EventData():
             data_TCs[(TC_xml['frame'],n_link,TC_xml['channel']%3)] = [ 
                 code_energy, value_r_z, value_phi
                 ]
-
-
-
  
     def _process_event(self, args, xml, MB_conv):
         data_TCs = defaultdict(list)
@@ -259,6 +196,9 @@ def apply_sort(df, counts, axis):
     for field in df.fields:
         df[field] = ak.unflatten(df[field], counts, axis)
     return df
+
+    
+            
 
 def provide_event(ev, gen):
     ev['r_over_z'] = np.sqrt(ev.good_tc_x**2 + ev.good_tc_y**2)/ev.good_tc_z
