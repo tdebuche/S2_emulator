@@ -67,14 +67,18 @@ class EventData():
         return pTT_id
 
 
-    def provide_ts(self,args):
-        
+    def provide_ts(self,args,scenario,xml_alloc):
+        selected_TCs = defaultdict(list)
+        for module_idx in range(len(self.ds_si.good_tc_layer)):
+            u,v,sector = getuvsector(self.ds_si.good_tc_layer[module_idx][0],
+                                        self.ds_si.good_tc_waferu[module_idx][0],
+                                        self.ds_si.good_tc_waferv[module_idx][0])
+                module = self.get_module_id(3,self.ds_si.good_tc_layer[module_idx][0],u,v)
 
         TCs = self.ds_si
         ts = defaultdict(list)
         Sector = args.Sector
         for module_idx in range(len(self.ds_si.good_tc_layer)):
-            
             u,v,sector = getuvsector(self.ds_si.good_tc_layer[module_idx][0],
                                         self.ds_si.good_tc_waferu[module_idx][0],
                                         self.ds_si.good_tc_waferv[module_idx][0])
@@ -127,8 +131,9 @@ class EventData():
         return data_pTTs
 
 
-    def _pTT_packer(self, args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup):
-        self.provide_ts(args)
+    def _pTT_packer(self, args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup,xml_alloc):
+        #self.provide_ts(args,scenario = 'all_TCs',xml_alloc)
+        self.provide_ts(args,scenario = 'unselected_TCs',xml_alloc)
         data_pTTs = self._process_eventpTT(args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup)
         self.pTT_packer =  data_pTTs
 
