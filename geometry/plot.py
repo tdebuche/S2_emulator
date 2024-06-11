@@ -11,7 +11,7 @@ import numpy as np
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 import matplotlib.pyplot as plt
-
+from data_handle.tools import getuvsector
             
 #######################################################################################
 ############################### PROVIDE EVENTS ########################################
@@ -72,61 +72,3 @@ def plot_uv(event):
                     plt.annotate('('+str(u)+','+str(v)+')',(TCs['good_tc_x'][TC_idx]*10,TCs['good_tc_y'][TC_idx]*10))
                     plt.scatter(TCs['good_tc_x'][TC_idx]*10,TCs['good_tc_y'][TC_idx]*10)
             plt.savefig('geometry/plot_geometry/'+ 'Layer' +str(layer)+'.png')
-
-def Sector0(layer,u,v):
-        if (layer <34) and (layer != 30) and (layer != 32) and (layer != 28):
-            if (v-u > 0) and (v >= 0):
-                return(True)
-        if (layer >= 34) and (layer%2 == 0):
-            if (v-u > 0) and (v > 0):
-                return(True)
-        if (layer >= 34) and (layer%2 == 1):
-            if (v-u >= 0) and (v >= 0):
-                return(True)
-        if (layer == 28) or (layer == 30) or (layer == 32):
-            if (u - 2*v <0) and (u+v >= 0):
-                return(True)
-        return False
-
-def getuvsector(layer,u,v):
-        if u == -999:
-            return (u,v,0)
-        if Sector0(layer,u,v):
-            if (layer != 28) and (layer != 30) and (layer != 32): 
-                return(v-u,v,0)
-            else :
-                if u >= 0:
-                    return (v,u,1)
-                else :
-                    return(-u,v-u,1)
-        else:
-            if  (layer <34):
-                u,v = -v,u-v
-            if (layer >= 34) and (layer%2 == 0):
-                u,v = -v+1,u-v+1
-            if (layer >= 34) and (layer%2 == 1):
-                u,v = -v-1,u-v-1
-            if Sector0(layer,u,v):
-                if (layer != 28) and (layer != 30) and (layer != 32): 
-                    return(v-u,v,1)
-                else:
-                    if u >= 0:
-                        return (v,u,1)
-                    else :
-                        return(-u,v-u,1)
-                    
-            else : 
-                if  (layer <34):
-                    u,v = -v,u-v
-                if (layer >= 34) and (layer%2 == 0):
-                    u,v = -v+1,u-v+1
-                if (layer >= 34) and (layer%2 == 1):
-                    u,v = -v-1,u-v-1
-                if Sector0(layer,u,v):
-                    if (layer != 28) and (layer != 30) and (layer != 32): 
-                        return(v-u,v,2)
-                    else :
-                        if u >= 0:
-                            return (v,u,1)
-                        else :
-                            return(-u,v-u,1)
