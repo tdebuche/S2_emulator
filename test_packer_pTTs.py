@@ -20,7 +20,7 @@ from data_handle.event_pTT import provide_events
 from data_handle.plot_pTT import create_energies
 from data_handle.plot_pTT import record_plot
 from data_handle.EMPfile import createEMPfile
-#import data_handle.geometry as geometry
+import data_handle.geometry as geometry
 from data_handle.plot_pTT import read_xml_plot
 
 parser = argparse.ArgumentParser(description='Stage-2 Emulator Parameters')
@@ -43,6 +43,8 @@ S1pTTCEEdup,S1pTTCEHdup = read_build_pTTs(args.Edges,args.Sector+1)
 xml_allocation = read_allocation_pTTs(args.Edges,args.Sector,4)
 xml_duplication = read_allocation_pTTs(args.Edges,args.Sector,2)
 xml_plot = read_xml_plot(args.Edges,args.Sector)
+xml_data = geometry.read_xml()
+xml_MB = geometry.MB_geometry()
 #xml_data = geometry.read_xml()
 #xml_MB = geometry.MB_geometry()
 print('ok files')
@@ -53,6 +55,8 @@ for idx, event in enumerate(events):
   #event._data_packer(args, xml_data, xml_MB)
   #print(event.data_packer)
   event._pTT_packer(args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup)
+  event._data_packer(args, xml_data, xml_MB)
+  print(event.data_packer)
   #print(event.pTT_packer)
   #event.provide_ts(args)
   #print(event.pTT_packer)
