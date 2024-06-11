@@ -173,10 +173,10 @@ class EventData():
                                             self.ds_si.good_tc_waferv[module_idx][0])
             if sector ==0:
                 module = self.get_module_id(3,self.ds_si.good_tc_layer[module_idx][0],u,v)
-            xml_alloc = self.get_TC_allocation(xml[0], module)
-            if xml_alloc: 
-                self._process_module(self.ds_si, module_idx, xml_alloc, data_TCs)
-                print(self.ds_si.good_tc_layer[module_idx][0],
+                xml_alloc = self.get_TC_allocation(xml[0], module)
+                if xml_alloc: 
+                    self._process_module(self.ds_si, module_idx, xml_alloc, data_TCs)
+                    print(self.ds_si.good_tc_layer[module_idx][0],
                                                 self.ds_si.good_tc_waferu[module_idx][0],
                                                 self.ds_si.good_tc_waferv[module_idx][0])
 
