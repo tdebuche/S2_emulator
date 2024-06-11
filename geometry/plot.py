@@ -67,8 +67,8 @@ def plot_uv(event):
                     L.append((u,v))
                     if not getuvsector(layer,u,v):
                         print((u,v,layer))
-                    else:
-                        u,v,sector = getuvsector(layer,u,v)
+                   # else:
+                        #u,v,sector = getuvsector(layer,u,v)
                     plt.annotate('('+str(u)+','+str(v)+')',(TCs['good_tc_x'][TC_idx]*10,TCs['good_tc_y'][TC_idx]*10))
                     plt.scatter(TCs['good_tc_x'][TC_idx]*10,TCs['good_tc_y'][TC_idx]*10)
             plt.savefig('geometry/plot_geometry/'+ 'Layer' +str(layer)+'.png')
