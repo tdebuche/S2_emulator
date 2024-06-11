@@ -67,15 +67,8 @@ class EventData():
         return pTT_id
 
 
-    def provide_ts(self,args,xml_alloc):
-        n_TCs = xml_alloc[-1]['index']  # dangerous
-        columns = [frame['column'] for frame in xml_alloc]
-   
-        # simulating the BC algorithm (ECON-T) and the phi sorting in the S1 FPGA
-        mod_phi = ds_TCs.good_tc_phi[idx][:n_TCs+1]
-        mod_energy = ds_TCs.good_tc_pt[idx][:n_TCs+1][ak.argsort(mod_phi)]
-        mod_r_over_z = ds_TCs.r_over_z[idx][:n_TCs+1][ak.argsort(mod_phi)]
-        mod_phi = ak.sort(mod_phi)
+    def provide_ts(self,args):
+        
 
         TCs = self.ds_si
         ts = defaultdict(list)
