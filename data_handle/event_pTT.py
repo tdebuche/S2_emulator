@@ -84,7 +84,7 @@ class EventData():
                 if self.ds_si.good_tc_layer[module_idx][0] < 48:
                     if ts[module] == []:
                         ts[module].append(0)
-                        ts[module][0] += self.ds_si.good_tc_pt[module_idx][0]
+                    ts[module][0] += self.ds_si.good_tc_pt[module_idx][0]
         self.ds_ts = ts
         
             
