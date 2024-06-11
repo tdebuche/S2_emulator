@@ -67,7 +67,16 @@ class EventData():
         return pTT_id
 
 
-    def provide_ts(self,args):
+    def provide_ts(self,args,xml_alloc):
+        n_TCs = xml_alloc[-1]['index']  # dangerous
+        columns = [frame['column'] for frame in xml_alloc]
+   
+        # simulating the BC algorithm (ECON-T) and the phi sorting in the S1 FPGA
+        mod_phi = ds_TCs.good_tc_phi[idx][:n_TCs+1]
+        mod_energy = ds_TCs.good_tc_pt[idx][:n_TCs+1][ak.argsort(mod_phi)]
+        mod_r_over_z = ds_TCs.r_over_z[idx][:n_TCs+1][ak.argsort(mod_phi)]
+        mod_phi = ak.sort(mod_phi)
+
         TCs = self.ds_si
         ts = defaultdict(list)
         Sector = args.Sector
@@ -166,9 +175,10 @@ class EventData():
         data_TCs = defaultdict(list)
 
         for module_idx in range(len(self.ds_si.good_tc_layer)):
-            module = self.get_module_id(self.ds_si.good_tc_layer[module_idx][0],
-                                        self.ds_si.good_tc_waferu[module_idx][0],
-                                        self.ds_si.good_tc_waferv[module_idx][0])
+            u,v,sector = getuvsector(self.ds_si.good_tc_layer[module_idx][0],
+                                            self.ds_si.good_tc_waferu[module_idx][0],
+                                            self.ds_si.good_tc_waferv[module_idx][0])
+            module = self.get_module_id(self.ds_si.good_tc_layer[module_idx][0],sector,u,v,sector)
             xml_alloc = self.get_TC_allocation(xml[0], module)
             if xml_alloc: self._process_module(self.ds_si, module_idx, xml_alloc, data_TCs)
 
