@@ -75,18 +75,15 @@ class EventData():
         Sector = args.Sector
         for module_idx in range(len(self.ds_si.good_tc_layer)):
             print(self.ds_si.good_tc_layer[module_idx][0],self.ds_si.good_tc_waferu[module_idx][0],self.ds_si.good_tc_waferv[module_idx][0])
-            else :
-                u,v,sector = getuvsector(self.ds_si.good_tc_layer[module_idx][0],
-                                            self.ds_si.good_tc_waferu[module_idx][0],
-                                            self.ds_si.good_tc_waferv[module_idx][0])
-                if u != -999:
-                    module = self.get_module_id(sector,
-                                                self.ds_si.good_tc_layer[module_idx][0],
-                                                u,
-                                                v)
-                    if self.ds_si.good_tc_layer[module_idx][0] < 48:
-                        if ts[module] == []:
-                            ts[module].append(0)
+            
+            u,v,sector = getuvsector(self.ds_si.good_tc_layer[module_idx][0],
+                                        self.ds_si.good_tc_waferu[module_idx][0],
+                                        self.ds_si.good_tc_waferv[module_idx][0])
+            if u != -999:
+                module = self.get_module_id(sector,self.ds_si.good_tc_layer[module_idx][0],u,v)
+                if self.ds_si.good_tc_layer[module_idx][0] < 48:
+                    if ts[module] == []:
+                        ts[module].append(0)
                         ts[module][0] += self.ds_si.good_tc_pt[module_idx][0]
         self.ds_ts = ts
         
