@@ -71,7 +71,7 @@ def plot_uv(event):
                         #u,v,sector = getuvsector(layer,u,v)
                     plt.annotate('('+str(u)+','+str(v)+')',(TCs['good_tc_x'][TC_idx]*10,TCs['good_tc_y'][TC_idx]*10))
                     plt.scatter(TCs['good_tc_x'][TC_idx]*10,TCs['good_tc_y'][TC_idx]*10)
-            plt.savefig('geometry/plot_geometry/'+ 'Layer' +str(layer)+'.png')
+            plt.savefig('geometry/plot_geometry_bis/'+ 'Layer' +str(layer)+'.png')
 
 def Sector0(layer,u,v):
         if (layer <34) and (layer != 30) and (layer != 32) and (layer != 28):
