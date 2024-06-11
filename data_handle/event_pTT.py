@@ -74,7 +74,6 @@ class EventData():
         ts = defaultdict(list)
         Sector = args.Sector
         for module_idx in range(len(self.ds_si.good_tc_layer)):
-            print(self.ds_si.good_tc_layer[module_idx][0],self.ds_si.good_tc_waferu[module_idx][0],self.ds_si.good_tc_waferv[module_idx][0])
             
             u,v,sector = getuvsector(self.ds_si.good_tc_layer[module_idx][0],
                                         self.ds_si.good_tc_waferu[module_idx][0],
@@ -162,7 +161,6 @@ class EventData():
  
     def _process_event(self, args, xml, MB_conv):
         data_TCs = defaultdict(list)
-        print(self.ds_si.good_tc_layer)
         for module_idx in range(len(self.ds_si.good_tc_layer)):
             u,v,sector = getuvsector(self.ds_si.good_tc_layer[module_idx][0],
                                             self.ds_si.good_tc_waferu[module_idx][0],
