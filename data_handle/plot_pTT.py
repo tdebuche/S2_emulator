@@ -183,11 +183,12 @@ def createplot(args,event,energies,BinXY,title):
     sc = plt.scatter(pointXY[0],pointXY[1],c=weights, vmin=0)
     plt.colorbar(sc)
     res = 0 
-    colors = cm.get_cmap("viridis", 8)
+    #colors = cm.get_cmap("viridis", 8)
+    colors = white_viridis
     for eta in range(len(BinXY)):
         for phi in range(len(BinXY[0])):
             plt.plot(BinXY[eta][phi][0],BinXY[eta][phi][1],color = 'black')
-            plt.fill(BinXY[eta][phi][0],BinXY[eta][phi][1],c = colors(weights[res]/weightmax))
+            plt.fill(BinXY[eta][phi][0],BinXY[eta][phi][1],c = colors(np.log(weights[res]+1)/30))
             res +=1
             #if energies[eta][phi] != 100000:
                 #plt.annotate(str(round(energies[eta][phi],2)),(np.sum(np.array(BinXY[eta][phi][0][0:4]))/4,np.sum(np.array(BinXY[eta][phi][1][0:4]))/4))
@@ -210,3 +211,13 @@ def energycluster(energies,etamax,phimax):
                 if (phimax+j)>=0 and (phimax+j)< len(energies[etamax+i]):
                     energy += energies[etamax+i][phimax+j]
     return energy
+
+white_viridis = LinearSegmentedColormap.from_list('white_viridis', [
+    (0,    '#ffffff'),
+    (1e-10,'#440053'),
+    (0.2,  '#404388'),
+    (0.4,  '#2a788e'),
+    (0.6,  '#21a784'),
+    (0.8,  '#78d151'),
+    (1,    '#fde624'),
+], N=1000)
