@@ -1,7 +1,7 @@
 import numpy as np
 import awkward as ak
 
-def build_pTTsCEE(ts_energy, args, S1pTTCEE,TCs):
+def build_pTTsCEE(ts_energy, args, S1pTTCEE):
     if args.Edges == 'yes': nb_phi = 28
     else : nb_phi = 24
     Sector = args.Sector
@@ -21,7 +21,7 @@ def build_pTTsCEE(ts_energy, args, S1pTTCEE,TCs):
     return(pTTsCEE)
 
 
-def build_pTTsCEH(stc_energy,args,S1pTTCEH,TCs):
+def build_pTTsCEH(stc_energy,args,S1pTTCEH):
     if args.Edges == 'yes': nb_phi = 28
     else : nb_phi = 24
     Sector = args.Sector
@@ -38,4 +38,7 @@ def build_pTTsCEH(stc_energy,args,S1pTTCEH,TCs):
                 energyCEH += stc_energy[module_id][0][stc] * energy/16
         pTTsCEE.append({'pTT_id' : pTT_id, 'energy': energyCEH})
     return(pTTsCEH)
+
+def add_TCs(pTTs,TCs,nb_selected_TCs, Sector,CEECEH):
+    return pTTs
                     
