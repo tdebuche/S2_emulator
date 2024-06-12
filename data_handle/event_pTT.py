@@ -67,21 +67,18 @@ class EventData():
         return pTT_id
 
 
-    def provide_ts(self,args,scenario,xml):
+    def provide_ts(self,args,xml):
         nb_selected_TCs = defaultdict(list)
         selected_TCs = self.ds_si
         for module_idx in range(len(self.ds_si.good_tc_layer)):
             u,v,sector = getuvsector(self.ds_si.good_tc_layer[module_idx][0],
                                         self.ds_si.good_tc_waferu[module_idx][0],
                                         self.ds_si.good_tc_waferv[module_idx][0])
-            module = self.get_module_id(3,self.ds_si.good_tc_layer[module_idx][0],u,v)
-            xml_alloc = self.get_TC_allocation(xml[0], module)
+            module_alloc = self.get_module_id(3,self.ds_si.good_tc_layer[module_idx][0],u,v)
+            xml_alloc = self.get_TC_allocation(xml[0], module_alloc)
+            module = self.get_module_id(sector,self.ds_si.good_tc_layer[module_idx][0],u,v)
             if xml_alloc: 
                 n_TCs = xml_alloc[-1]['index']
-                selected_TCs.good_tc_phi[module_idx]  = selected_TCs.good_tc_phi[module_idx][:n_TCs+1]
-                selected_TCs.good_tc_r_over_z[module_idx]  = selected_TCs.good_tc_r_over_z[module_idx][:n_TCs+1]           
-                selected_TCs.good_tc_pt[module_idx]  = selected_TCs.good_tc_pt[module_idx][:n_TCs+1]
-                selected_TCs.good_tc_layer[module_idx]  = selected_TCs.good_tc_layer[module_idx][:n_TCs+1]
                 nb_selected_TCs[module].append[n_TCs]  
 
         TCs = self.ds_si
@@ -93,34 +90,37 @@ class EventData():
                                         self.ds_si.good_tc_waferv[module_idx][0])
             if u != -999:
                 module = self.get_module_id(sector,self.ds_si.good_tc_layer[module_idx][0],u,v)
-                module_alloc = self.get_module_id(3,self.ds_si.good_tc_layer[module_idx][0],u,v)
                 if self.ds_si.good_tc_layer[module_idx][0] < 48:
                     if ts[module] == []:
                         ts[module].append(0)
-                    if scenario == 'all_TCs':
-                        for idx in range(len(self.ds_si.good_tc_layer[module_idx])):
-                            ts[module][0] += self.ds_si.good_tc_pt[module_idx][idx]
-                    else :
-                        for idx in range(nb_selected_TCs[module_alloc][0],len(self.ds_si.good_tc_layer[module_idx])):
-                            ts[module][0] += self.ds_si.good_tc_pt[module_idx][idx]
+                    #for idx in range(len(self.ds_si.good_tc_layer[module_idx])):
+                    for idx in range(nb_selected_TCs[module][0],len(self.ds_si.good_tc_layer[module_idx])):
+                        ts[module][0] += self.ds_si.good_tc_pt[module_idx][idx]
         self.ds_ts = ts
-        return(selected_TCs)
+        return(nb_selected_TCs)
         
             
     def _process_eventpTT(self,args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup,xml):
         data_pTTs = defaultdict(list)
         Sector = args.Sector
         
-        #self.provide_ts(args,'all_TCs',xml)
-        selected_TCs = self.provide_ts(args,'unselected_TCs',xml)
-        TCs = selected_TCs[(selected_TCs['good_tc_phi'] >=0) and (selected_TCs['good_tc_phi'] <np.pi *2/3)]
-        TCs = selected_TCs[selected_TCs['good_tc_layer'] <27]
-        self.ds_pTTsCEE = build_pTTsCEE(self.ds_ts, args, S1pTTCEE,TCs)
+        #nb_selected_TCs =self.provide_ts(args,'all_TCs',xml)
+        nb_selected_TCs = self.provide_ts(args,'unselected_TCs',xml)
+
+        #CEE
+
+        #Sector 0
+        self.ds_pTTsCEE = build_pTTsCEE(self.ds_ts, args, S1pTTCEE)  #from module sums
+        self.ds_pTTsCEE  = add_TCs(self.ds_pTTsCEE,self.ds_si,nb_selected_TCs,0,'CEE') #add selected TCs
         pTTs = self.ds_pTTsCEE
-        TCs = selected_TCs[(selected_TCs['good_tc_phi'] >=np.pi *2/3) and (selected_TCs['good_tc_phi'] <np.pi *4/3)]
-        TCs = selected_TCs[selected_TCs['good_tc_layer'] <27]
-        self.ds_pTTsdupCEE = build_pTTsCEE(self.ds_ts, args, S1pTTCEEdup,TCs)
+    
+
+        #Sector 1
+        self.ds_pTTsdupCEE = build_pTTsCEE(self.ds_ts, args, S1pTTCEEdup)
+        self.ds_pTTsdupCEE  = add_TCs(self.ds_pTTsdupCEE,self.ds_si,nb_selected_TCs,1,'CEE')
         pTTsdup = self.ds_pTTsdupCEE
+
+        #fill CEE links 
         
         for pTT_idx in range(len(pTTs)):
             pTT = pTTs[pTT_idx]['pTT_id']
@@ -135,14 +135,19 @@ class EventData():
                     data_pTTs[(pTT_xml[0]['frame'], pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTsdup[pTT_idx]['energy'])
 
 
-        TCs = selected_TCs[(selected_TCs['good_tc_phi'] >=0) and (selected_TCs['good_tc_phi'] <np.pi *2/3)]
-        TCs = selected_TCs[selected_TCs['good_tc_layer'] >26]
-        self.ds_pTTsCEH = build_pTTsCEE(self.ds_ts, args, S1pTTCEH,TCs)
-        pTTs = self.ds_pTTsCEH
-        TCs = selected_TCs[(selected_TCs['good_tc_phi'] >=np.pi *2/3) and (selected_TCs['good_tc_phi'] <np.pi *4/3)]
-        TCs = selected_TCs[selected_TCs['good_tc_layer'] >26]
-        self.ds_pTTsdupCEH = build_pTTsCEE(self.ds_ts, args, S1pTTCEHdup,TCs)
+        #CEH
+
+        #Sector 0 
+        self.ds_pTTsCEH = build_pTTsCEE(self.ds_ts, args, S1pTTCEH)
+        self.ds_pTTsCEH  = add_TCs(self.ds_pTTsCEH,self.ds_si,nb_selected_TCs,0,'CEH')
+        pTTs = self.ds_pTTsCEE
+
+        #Sector 1
+        self.ds_pTTsdupCEH = build_pTTsCEE(self.ds_ts, args, S1pTTCEHdup)
+        self.ds_pTTsdupCEH  = add_TCs(self.ds_pTTsdupCEH,self.ds_si,nb_selected_TCs,1,'CEH')
         pTTsdup = self.ds_pTTsdupCEH
+
+        #fill CEH links
         
         for pTT_idx in range(len(pTTs)):
             pTT = pTTs[pTT_idx]['pTT_id']
