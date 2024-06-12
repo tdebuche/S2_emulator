@@ -76,12 +76,12 @@ class EventData():
                                         self.ds_si.good_tc_waferv[module_idx][0])
             module = self.get_module_id(3,self.ds_si.good_tc_layer[module_idx][0],u,v)
             xml_alloc = self.get_TC_allocation(xml[0], module)
-                if xml_alloc: 
-                    n_TCs = xml_alloc[-1]['index']
-                    selected_TCs.ds_si.good_tc_phi[module_idx]  = selected_TCs.ds_si.good_tc_phi[module_idx][:n_TCs+1]
-                    selected_TCs.ds_si.good_tc_r_over_z[module_idx]  = selected_TCs.good_tc_r_over_z[module_idx][:n_TCs+1]
-                    selected_TCs.ds_si.good_tc_pt[module_idx]  = selected_TCs.ds_si.good_tc_pt[module_idx][:n_TCs+1]
-                    nb_selected_TCs[module].append[n_TCs]  
+            if xml_alloc: 
+                n_TCs = xml_alloc[-1]['index']
+                selected_TCs.ds_si.good_tc_phi[module_idx]  = selected_TCs.ds_si.good_tc_phi[module_idx][:n_TCs+1]
+                selected_TCs.ds_si.good_tc_r_over_z[module_idx]  = selected_TCs.good_tc_r_over_z[module_idx][:n_TCs+1]           
+                selected_TCs.ds_si.good_tc_pt[module_idx]  = selected_TCs.ds_si.good_tc_pt[module_idx][:n_TCs+1]
+                nb_selected_TCs[module].append[n_TCs]  
 
         TCs = self.ds_si
         ts = defaultdict(list)
