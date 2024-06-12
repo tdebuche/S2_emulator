@@ -48,17 +48,17 @@ def add_TCs(pTTs,TCs,nb_selected_TCs, Sector,CEECEH):
     for module_idx in range(len(TCs.good_tc_layer)):
         if ((TCs.good_tc_layer[module_idx][0] < 27) and (CEECEH == 'CEE' )) or ((TCs.good_tc_layer[module_idx][0] >= 27) and (CEECEH == 'CEH' )):
             u,v,sector = getuvsector(TCs.good_tc_layer[module_idx][0],
-                                        TCs.ds_si.good_tc_waferu[module_idx][0],
-                                        TCs.ds_si.good_tc_waferv[module_idx][0])
+                                        TCs.good_tc_waferu[module_idx][0],
+                                        TCs.good_tc_waferv[module_idx][0])
             module = get_module_id(Sector, TCs.good_tc_layer[module_idx][0], u, v)
             if sector == Sector:
                 for idx in range(len(nb_selected_TCs[module])):
-                    eta,phi = getetaphi(TCs.ds_si.good_tc_phi[module_idx][idx],TCs.ds_si.good_tc_r_over_z[module_idx][idx])
+                    eta,phi = getetaphi(TCs.good_tc_phi[module_idx][idx],TCs.good_tc_r_over_z[module_idx][idx])
                     S1_Board = S1_Board(TCs.good_tc_layer[module_idx][idx])
                     if CEECEH == 'CEE': a = 0
                     if CEECEH == 'CEH': a = 1
                     pTT = get_pTT_id(Sector, S1Board, a, eta,phi)
-                    energytoadd[pTT].append(TCs.ds_si.good_tc_pt[module_idx][idx])
+                    energytoadd[pTT].append(TCs.good_tc_pt[module_idx][idx])
     return pTTs
 
 
