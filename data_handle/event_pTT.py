@@ -67,13 +67,21 @@ class EventData():
         return pTT_id
 
 
-    def provide_ts(self,args,scenario,xml_alloc):
-        selected_TCs = defaultdict(list)
+    def provide_ts(self,args,scenario,xml):
+        nb_selected_TCs = defaultdict(list)
+        selected_TCs = self.ds_si
         for module_idx in range(len(self.ds_si.good_tc_layer)):
             u,v,sector = getuvsector(self.ds_si.good_tc_layer[module_idx][0],
                                         self.ds_si.good_tc_waferu[module_idx][0],
                                         self.ds_si.good_tc_waferv[module_idx][0])
             module = self.get_module_id(3,self.ds_si.good_tc_layer[module_idx][0],u,v)
+            xml_alloc = self.get_TC_allocation(xml[0], module)
+                if xml_alloc: 
+                    n_TCs = xml_alloc[-1]['index']
+                    selected_TCs.ds_si.good_tc_phi[module_idx]  = selected_TCs.ds_si.good_tc_phi[module_idx][:n_TCs+1]
+                    selected_TCs.ds_si.good_tc_r_over_z[module_idx]  = selected_TCs.good_tc_r_over_z[module_idx][:n_TCs+1]
+                    selected_TCs.ds_si.good_tc_pt[module_idx]  = selected_TCs.ds_si.good_tc_pt[module_idx][:n_TCs+1]
+                    nb_selected_TCs[module].append[n_TCs]  
 
         TCs = self.ds_si
         ts = defaultdict(list)
@@ -84,20 +92,33 @@ class EventData():
                                         self.ds_si.good_tc_waferv[module_idx][0])
             if u != -999:
                 module = self.get_module_id(sector,self.ds_si.good_tc_layer[module_idx][0],u,v)
+                module_alloc = self.get_module_id(3,self.ds_si.good_tc_layer[module_idx][0],u,v)
                 if self.ds_si.good_tc_layer[module_idx][0] < 48:
                     if ts[module] == []:
                         ts[module].append(0)
-                    for idx in range(len(self.ds_si.good_tc_pt[module_idx])):
-                        ts[module][0] += self.ds_si.good_tc_pt[module_idx][idx]
+                    if scenario == 'all_TCs':
+                        for idx in range(len(self.ds_si.good_tc_layer[module_idx])):
+                            ts[module][0] += self.ds_si.good_tc_pt[module_idx][idx]
+                    else :
+                        for idx in range(nb_selected_TCs[module_alloc][0],len(self.ds_si.good_tc_layer[module_idx])):
+                            ts[module][0] += self.ds_si.good_tc_pt[module_idx][idx]
         self.ds_ts = ts
+        return(selected_TCs)
         
             
-    def _process_eventpTT(self,args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup):
+    def _process_eventpTT(self,args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup,xml):
         data_pTTs = defaultdict(list)
         Sector = args.Sector
-        self.ds_pTTsCEE = build_pTTsCEE(self.ds_ts, args, S1pTTCEE)
+        
+        #self.provide_ts(args,'all_TCs',xml)
+        selected_TCs = self.provide_ts(args,'unselected_TCs',xml)
+        TCs = selected_TCs[(selected_TCs['good_tc_phi'] >=0) and (selected_TCs['good_tc_phi'] <np.pi *2/3)]
+        TCs = selected_TCs[selected_TCs['good_tc_layer'] <27]
+        self.ds_pTTsCEE = build_pTTsCEE(self.ds_ts, args, S1pTTCEE,TCs)
         pTTs = self.ds_pTTsCEE
-        self.ds_pTTsdupCEE = build_pTTsCEE(self.ds_ts, args, S1pTTCEEdup)
+        TCs = selected_TCs[(selected_TCs['good_tc_phi'] >=np.pi *2/3) and (selected_TCs['good_tc_phi'] <np.pi *4/3)]
+        TCs = selected_TCs[selected_TCs['good_tc_layer'] <27]
+        self.ds_pTTsdupCEE = build_pTTsCEE(self.ds_ts, args, S1pTTCEEdup,TCs)
         pTTsdup = self.ds_pTTsdupCEE
         
         for pTT_idx in range(len(pTTs)):
@@ -112,9 +133,14 @@ class EventData():
                 if data_pTTs[(pTT_xml[0]['frame'], pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)] == []:
                     data_pTTs[(pTT_xml[0]['frame'], pTT_xml[0]['n_link'],pTT_xml[0]['channel']%2)].append(pTTsdup[pTT_idx]['energy'])
 
-        self.ds_pTTsCEH = build_pTTsCEE(self.ds_ts, args, S1pTTCEH)
+
+        TCs = selected_TCs[(selected_TCs['good_tc_phi'] >=0) and (selected_TCs['good_tc_phi'] <np.pi *2/3)]
+        TCs = selected_TCs[selected_TCs['good_tc_layer'] >26]
+        self.ds_pTTsCEH = build_pTTsCEE(self.ds_ts, args, S1pTTCEH,TCs)
         pTTs = self.ds_pTTsCEH
-        self.ds_pTTsdupCEH = build_pTTsCEE(self.ds_ts, args, S1pTTCEHdup)
+        TCs = selected_TCs[(selected_TCs['good_tc_phi'] >=np.pi *2/3) and (selected_TCs['good_tc_phi'] <np.pi *4/3)]
+        TCs = selected_TCs[selected_TCs['good_tc_layer'] >26]
+        self.ds_pTTsdupCEH = build_pTTsCEE(self.ds_ts, args, S1pTTCEHdup,TCs)
         pTTsdup = self.ds_pTTsdupCEH
         
         for pTT_idx in range(len(pTTs)):
@@ -132,10 +158,8 @@ class EventData():
         return data_pTTs
 
 
-    def _pTT_packer(self, args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup,xml_alloc):
-        #self.provide_ts(args,'all_TCs',xml_alloc)
-        self.provide_ts(args,'unselected_TCs',xml_alloc)
-        data_pTTs = self._process_eventpTT(args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup)
+    def _pTT_packer(self, args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup,xml):
+        data_pTTs = self._process_eventpTT(args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup,xml)
         self.pTT_packer =  data_pTTs
 
 ################################TCs###################################################
@@ -211,7 +235,7 @@ def apply_sort(df, counts, axis):
 def provide_event(ev, gen):
     ev['r_over_z'] = np.sqrt(ev.good_tc_x**2 + ev.good_tc_y**2)/ev.good_tc_z
     ev['MB_v'] = np.floor((ev.good_tc_cellv-1)/4)
-    ev = ev[[x for x in ak.fields(ev) if not x in ["good_tc_x","good_tc_y","good_tc_z"]]]
+    #ev = ev[[x for x in ak.fields(ev) if not x in ["good_tc_x","good_tc_y","good_tc_z"]]]
     
     # dividing silicon and scintillators
     sci = ev[ev['good_tc_subdet'] == 10]
