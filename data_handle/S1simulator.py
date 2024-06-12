@@ -1,7 +1,7 @@
 import numpy as np
 import awkward as ak
 
-def build_pTTsCEE(ts_energy, args, S1pTTCEE):
+def build_pTTsCEE(ts_energy, args, S1pTTCEE,TCs):
     if args.Edges == 'yes': nb_phi = 28
     else : nb_phi = 24
     Sector = args.Sector
@@ -21,7 +21,7 @@ def build_pTTsCEE(ts_energy, args, S1pTTCEE):
     return(pTTsCEE)
 
 
-def build_pTTsCEH(stc_energy,args,S1pTTCEH):
+def build_pTTsCEH(stc_energy,args,S1pTTCEH,TCs):
     if args.Edges == 'yes': nb_phi = 28
     else : nb_phi = 24
     Sector = args.Sector
