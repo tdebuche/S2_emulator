@@ -75,8 +75,12 @@ def get_module_id(Sector, plane, u, v):
 def getetaphi(phi,roverz):
     teta = np.arctan(roverz)
     eta = -np.log(np.tan(teta/2))
-    print(teta,eta,phi)
     eta = int((eta-1.305)/(np.pi/36)) #1.305 offset
     phi = int((phi+ (15*np.pi/180))/(np.pi/36) ) # -15° offset
     return(eta,phi)
-
+def S1board(layer):
+    [[3, 34], [1, 36, 47], [33, 40, 41], [9, 39, 44], [7, 42, 43], [13, 38, 46], [17, 27], [25, 31], [23, 30], [15, 32], [19, 29], [21, 28], [5, 35], [11, 37, 45]]
+    for S1board_idx in range(len(S1_Boards)) :
+        if layer in S1boards[S1board_idx]:
+            return(S1board_idx)
+            
