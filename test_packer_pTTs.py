@@ -56,6 +56,7 @@ for idx, event in enumerate(events):
   #print(event.data_packer)
   print(event.ds_si.r_over_z)
   print(event.ds_si.good_tc_z)
+  print(event.ds_si.good_tc_layer)
   #event._pTT_packer(args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup,xml_data)
   
   #event._data_packer(args, xml_data, xml_MB)
