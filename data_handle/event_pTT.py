@@ -97,7 +97,7 @@ class EventData():
                         #if nb_selected_TCs[module]:
                         #for idx in range(nb_selected_TCs[module][0],len(self.ds_si.good_tc_layer[module_idx])):
                         ts[module][0] += self.ds_si.good_tc_pt[module_idx][idx]
-                    else : 
+                    if not nb_selected_TCs[module]: : 
                         print(sector, self.ds_si.good_tc_layer[module_idx][0],u,v)
         
         self.ds_ts = ts
