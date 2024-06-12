@@ -57,7 +57,7 @@ def add_TCs(pTTs,TCs,nb_selected_TCs, Sector,CEECEH):
                     if CEECEH == 'CEE': a = 0
                     if CEECEH == 'CEH': a = 1
                     pTT = get_pTT_id(Sector, S1Board, a, eta,phi)
-                energytoadd[pTT].append(TCs.ds_si.good_tc_pt[module_idx][idx])
+                    energytoadd[pTT].append(TCs.ds_si.good_tc_pt[module_idx][idx])
     return pTTs
 
 
@@ -70,3 +70,11 @@ def get_pTT_id(Sector, S1Board, CEECEH, eta,phi):
 
 def get_module_id(Sector, plane, u, v):
     return hex(0x00000000 |  ((Sector & 0x3) << 29) | ((0 & 0x3) << 26)  | ((0 & 0xF) << 22) |  ((plane & 0x3F) << 16) | ((u & 0xF) << 12) | ((v & 0xF) << 8))
+
+def getetaphi(phi,roverz):
+    teta = np.arcos(1/roverz)
+    eta = -np.ln(np.tan(teta/2))
+    eta = int((eta-1.305)/(np.pi/36)) #1.305 offset
+    phi = int((phi+ (15*np.pi/180))/(np.pi/36) ) # -15° offset
+    return(eta,phi)
+
