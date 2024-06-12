@@ -74,7 +74,7 @@ def get_module_id(Sector, plane, u, v):
 
 def getetaphi(phi,roverz):
     teta = np.arccos(1/roverz)
-    eta = -np.ln(np.tan(teta/2))
+    eta = -np.log(np.tan(teta/2))
     eta = int((eta-1.305)/(np.pi/36)) #1.305 offset
     phi = int((phi+ (15*np.pi/180))/(np.pi/36) ) # -15° offset
     return(eta,phi)
