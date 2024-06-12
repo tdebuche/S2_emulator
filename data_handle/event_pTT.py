@@ -4,7 +4,7 @@ import awkward as ak
 import uproot
 import math
 import yaml
-from data_handle.S1simulator import build_pTTsCEE
+from data_handle.S1simulator import build_pTTsCEE,add_TCs
 import cppyy
 from cppyy.gbl import l1thgcfirmware, std
 
