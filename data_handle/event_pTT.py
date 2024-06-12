@@ -79,7 +79,7 @@ class EventData():
             module = self.get_module_id(sector,self.ds_si.good_tc_layer[module_idx][0],u,v)
             if xml_alloc: 
                 n_TCs = xml_alloc[-1]['index']
-                nb_selected_TCs[module].append[n_TCs]  
+                nb_selected_TCs[module].append(n_TCs)  
 
         TCs = self.ds_si
         ts = defaultdict(list)
