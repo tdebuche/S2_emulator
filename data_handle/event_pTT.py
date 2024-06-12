@@ -93,10 +93,10 @@ class EventData():
                 if self.ds_si.good_tc_layer[module_idx][0] < 48:
                     if ts[module] == []:
                         ts[module].append(0)
-                    #for idx in range(len(self.ds_si.good_tc_layer[module_idx])):
-                    if nb_selected_TCs[module]:
-                        for idx in range(nb_selected_TCs[module][0],len(self.ds_si.good_tc_layer[module_idx])):
-                            ts[module][0] += self.ds_si.good_tc_pt[module_idx][idx]
+                    for idx in range(len(self.ds_si.good_tc_layer[module_idx])):
+                        #if nb_selected_TCs[module]:
+                        #for idx in range(nb_selected_TCs[module][0],len(self.ds_si.good_tc_layer[module_idx])):
+                        ts[module][0] += self.ds_si.good_tc_pt[module_idx][idx]
                     else : 
                         print(sector, self.ds_si.good_tc_layer[module_idx][0],u,v)
         
@@ -113,13 +113,13 @@ class EventData():
 
         #Sector 0
         self.ds_pTTsCEE = build_pTTsCEE(self.ds_ts, args, S1pTTCEE)  #from module sums
-        self.ds_pTTsCEE  = add_TCs(self.ds_pTTsCEE,self.ds_si,nb_selected_TCs,0,'CEE') #add selected TCs
+        #self.ds_pTTsCEE  = add_TCs(self.ds_pTTsCEE,self.ds_si,nb_selected_TCs,0,'CEE') #add selected TCs
         pTTs = self.ds_pTTsCEE
     
 
         #Sector 1
         self.ds_pTTsdupCEE = build_pTTsCEE(self.ds_ts, args, S1pTTCEEdup)
-        self.ds_pTTsdupCEE  = add_TCs(self.ds_pTTsdupCEE,self.ds_si,nb_selected_TCs,1,'CEE')
+        #self.ds_pTTsdupCEE  = add_TCs(self.ds_pTTsdupCEE,self.ds_si,nb_selected_TCs,1,'CEE')
         pTTsdup = self.ds_pTTsdupCEE
 
         #fill CEE links 
@@ -141,12 +141,12 @@ class EventData():
 
         #Sector 0 
         self.ds_pTTsCEH = build_pTTsCEE(self.ds_ts, args, S1pTTCEH)
-        self.ds_pTTsCEH  = add_TCs(self.ds_pTTsCEH,self.ds_si,nb_selected_TCs,0,'CEH')
+        #self.ds_pTTsCEH  = add_TCs(self.ds_pTTsCEH,self.ds_si,nb_selected_TCs,0,'CEH')
         pTTs = self.ds_pTTsCEH
 
         #Sector 1
         self.ds_pTTsdupCEH = build_pTTsCEE(self.ds_ts, args, S1pTTCEHdup)
-        self.ds_pTTsdupCEH  = add_TCs(self.ds_pTTsdupCEH,self.ds_si,nb_selected_TCs,1,'CEH')
+        #self.ds_pTTsdupCEH  = add_TCs(self.ds_pTTsdupCEH,self.ds_si,nb_selected_TCs,1,'CEH')
         pTTsdup = self.ds_pTTsdupCEH
 
         #fill CEH links
