@@ -53,6 +53,8 @@ def add_TCs(pTTs,TCs,nb_selected_TCs, Sector,CEECEH):
             module = get_module_id(Sector, TCs.good_tc_layer[module_idx][0], u, v)
             if sector == Sector:
                 for idx in range(len(nb_selected_TCs[module])):
+		    print(TCs.good_tc_layer[module_idx][idx],TCs.good_tc_waferu[module_idx][idx],TCs.good_tc_waferv[module_idx][idx],TCs.good_tc_phi[module_idx][idx],TCs.r_over_z[module_idx][idx])
+
                     eta,phi = getetaphi(TCs.good_tc_phi[module_idx][idx],TCs.r_over_z[module_idx][idx])
                     S1_Board = S1_Board(TCs.good_tc_layer[module_idx][idx])
                     if CEECEH == 'CEE': a = 0
