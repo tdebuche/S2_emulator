@@ -54,9 +54,10 @@ for idx, event in enumerate(events):
   #print(str(idx))
   #event._data_packer(args, xml_data, xml_MB)
   #print(event.data_packer)
-
-  event._pTT_packer(args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup,xml_data)
-  event._data_packer(args, xml_data, xml_MB)
+  print(event.ds_si.r_over_z)
+  #event._pTT_packer(args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup,xml_data)
+  
+  #event._data_packer(args, xml_data, xml_MB)
   #print(event.data_packer)
   #print(event.phi_gen)
   #print(event.eta_gen)
@@ -65,6 +66,6 @@ for idx, event in enumerate(events):
   #print(event.pTT_packer)
   #print(event.ds_ts)
   #print(xml_plot)
-  record_plot(event,xml_plot,args,'pTT_event'+str(idx))
+  #record_plot(event,xml_plot,args,'pTT_event'+str(idx))
   #createEMPfile(event)
     
