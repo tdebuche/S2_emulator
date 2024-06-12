@@ -19,6 +19,7 @@ def build_pTTsCEE(ts_energy, args, S1pTTCEE):
             energy = ModulesCEE[module_idx]['module_energy']
             if ts_energy[module_id] != []:
                 energyCEE += ts_energy[module_id][0] * energy/16
+        energyCEE = 0 
         pTTsCEE.append({'pTT_id' : pTT_id, 'energy': energyCEE})
             #if energyCEE != 0:
             #print({'pTT_id' : pTT_id, 'energy': energyCEE})
@@ -52,7 +53,8 @@ def add_TCs(pTTs,TCs,nb_selected_TCs, Sector,CEECEH):
                                         TCs.good_tc_waferv[module_idx][0])
             module = get_module_id(Sector, TCs.good_tc_layer[module_idx][0], u, v)
             if sector == Sector:
-                for idx in range(min(len(nb_selected_TCs[module]),len(TCs.good_tc_layer[module_idx]))):
+                #for idx in range(min(len(nb_selected_TCs[module]),len(TCs.good_tc_layer[module_idx]))):
+                for idx in range(len(TCs.good_tc_layer[module_idx])):
                     eta,phi = getetaphi(TCs.good_tc_phi[module_idx][idx] - Sector*2/3 *np.pi ,TCs.r_over_z[module_idx][idx])
                     S1Board_idx = S1Board(TCs.good_tc_layer[module_idx][idx])
                     if CEECEH == 'CEE': a = 0
