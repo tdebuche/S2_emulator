@@ -98,7 +98,7 @@ class EventData():
                         for idx in range(nb_selected_TCs[module][0],len(self.ds_si.good_tc_layer[module_idx])):
                             ts[module][0] += self.ds_si.good_tc_pt[module_idx][idx]
                     else : 
-                        print( u,v,sector)
+                        print(sector, self.ds_si.good_tc_layer[module_idx][0],u,v)
         
         self.ds_ts = ts
         return(nb_selected_TCs)
@@ -208,9 +208,6 @@ class EventData():
                 xml_alloc = self.get_TC_allocation(xml[0], module)
                 if xml_alloc: 
                     self._process_module(self.ds_si, module_idx, xml_alloc, data_TCs)
-                    print(self.ds_si.good_tc_layer[module_idx][0],
-                                                self.ds_si.good_tc_waferu[module_idx][0],
-                                                self.ds_si.good_tc_waferv[module_idx][0])
 
         for MB_idx in range(len(self.ds_sci.good_tc_layer)):
             MB = self.get_MB_id(self.ds_sci.good_tc_layer[MB_idx][0],
