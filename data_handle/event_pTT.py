@@ -114,7 +114,7 @@ class EventData():
         #Sector 0
         self.ds_pTTsCEE = build_pTTsCEE(self.ds_ts, args, S1pTTCEE)  #from module sums
         self.ds_pTTsCEE  = add_TCs(self.ds_pTTsCEE,self.ds_si,nb_selected_TCs,0,'CEE') #add selected TCs
-        pTTs = self.ds_pTTsCEE
+        pTTs = self.ds_pTTsCEH
     
 
         #Sector 1
