@@ -103,9 +103,7 @@ class EventData():
     def _process_eventpTT(self,args, xml_allocation,xml_duplication,S1pTTCEE,S1pTTCEH,S1pTTCEEdup,S1pTTCEHdup,xml):
         data_pTTs = defaultdict(list)
         Sector = args.Sector
-        
-        #nb_selected_TCs =self.provide_ts(args,'all_TCs',xml)
-        nb_selected_TCs = self.provide_ts(args,'unselected_TCs',xml)
+        nb_selected_TCs = self.provide_ts(args,,xml)
 
         #CEE
 
